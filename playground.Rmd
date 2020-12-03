@@ -8,7 +8,9 @@ output: html_document
 ```{r}
 library(dplyr)
 library(forcats)
+
 library(ggplot2)
+library(fmsb)
 
 library(FactoMineR)
 library(factoextra)
@@ -97,4 +99,129 @@ input_cluster %>%
 input_cluster %>%
   group_by(cluster) %>%
   summarize(count = n())
+```
+
+
+# Output
+
+## Question 7
+
+```{r}
+q7 <- survey %>%
+  dplyr::select(Q7_Part_1, Q7_Part_2, Q7_Part_3, Q7_Part_4, Q7_Part_5, Q7_Part_6, Q7_Part_7, Q7_Part_8, Q7_Part_9, Q7_Part_10, Q7_Part_11, Q7_Part_12, Q7_OTHER)
+
+q7_cluster <- cbind(q7, cluster)
+
+q7_cluster <- q7_cluster %>%
+  group_by(cluster) %>%
+  summarize(Python = sum(Q7_Part_1 != ""),
+            R = sum(Q7_Part_2 != ""),
+            SQL = sum(Q7_Part_3 != ""),
+            C = sum(Q7_Part_4 != ""),
+            `C++` = sum(Q7_Part_5 != ""),
+            Java = sum(Q7_Part_6 != ""),
+            Javascript = sum(Q7_Part_7 != ""),
+            Julia = sum(Q7_Part_8 != ""),
+            Swift = sum(Q7_Part_9 != ""),
+            Bash = sum(Q7_Part_10 != ""),
+            MATLAB = sum(Q7_Part_11 != ""),
+            None = sum(Q7_Part_12 != ""),
+            Other = sum(Q7_OTHER != ""))
+
+rownames(q7_cluster) <- q7_cluster$cluster
+q7_cluster <- q7_cluster[, -c(1, 1)]
+
+q7_cluster <- rbind(apply(q7_cluster, 2, max), apply(q7_cluster, 2, min), q7_cluster)
+```
+
+
+```{r}
+q7_cluster_1 <- q7_cluster[3,]
+q7_cluster_2 <- q7_cluster[4,]
+q7_cluster_3 <- q7_cluster[5,]
+
+q7_cluster_1 <- rbind(rep(max(q7_cluster_1),15), rep(0,15), q7_cluster_1)
+radarchart(q7_cluster_1)
+
+q7_cluster_2 <- rbind(rep(max(q7_cluster_2),15), rep(0,15), q7_cluster_2)
+radarchart(q7_cluster_2)
+
+q7_cluster_3 <- rbind(rep(max(q7_cluster_3),15), rep(0,15), q7_cluster_3)
+radarchart(q7_cluster_3)
+```
+
+
+```{r}
+# Define fill colors
+colors_fill <- c(scales::alpha("red", 0.1),
+                 scales::alpha("yellow", 0.1),
+                 scales::alpha("lightgreen", 0.1))
+
+
+# Define line colors
+colors_line <-  c(scales::alpha("darkred", 0.9),
+                  scales::alpha("gold", 0.9),
+                  scales::alpha("darkgreen", 0.9))
+
+radarchart(q7_cluster,
+           seg = 13,  # Number of axis segments
+           title = "What programming languages do you use on a regular basis?",
+           pcol = colors_line,
+           pfcol = colors_fill)
+
+# Add a legend
+legend(x=1.15,
+       y=1.35,
+       legend = rownames(q7_cluster[-c(1,2),]),
+       bty = "n", pch=20 , col = colors_line, cex = 1.05, pt.cex = 1.5)
+```
+
+
+
+## Question 31
+
+```{r}
+q31 <- survey %>%
+  dplyr::select(Q31_A_Part_1, Q31_A_Part_2, Q31_A_Part_3, Q31_A_Part_4, Q31_A_Part_5, Q31_A_Part_6, Q31_A_Part_7, Q31_A_Part_8, Q31_A_Part_9, Q31_A_Part_10, Q31_A_Part_11, Q31_A_Part_12, Q31_A_Part_13, Q31_A_Part_14, Q31_A_OTHER)
+
+q31_cluster <- cbind(q31, cluster)
+
+q31_cluster <- q31_cluster %>%
+  group_by(cluster) %>%
+  summarize(`Amazon QuickSight` = sum(Q31_A_Part_1 != ""),
+            `Microsoft Power BI` = sum(Q31_A_Part_2 != ""),
+            `Google Data Studio` = sum(Q31_A_Part_3 != ""),
+            `Looker` = sum(Q31_A_Part_4 != ""),
+            Tableau = sum(Q31_A_Part_5 != ""),
+            Salesforce = sum(Q31_A_Part_6 != ""),
+            `Einstein Analytics` = sum(Q31_A_Part_7 != ""),
+            Qlik = sum(Q31_A_Part_8 != ""),
+            Domo = sum(Q31_A_Part_9 != ""),
+            `TIBCO Spotfire` = sum(Q31_A_Part_10 != ""),
+            `Alteryx` = sum(Q31_A_Part_11 != ""),
+            `Sisense` = sum(Q31_A_Part_12 != ""),
+            SAP = sum(Q31_A_Part_13 != ""),
+            None = sum(Q31_A_Part_14 != ""),
+            Other = sum(Q31_A_OTHER != ""))
+
+rownames(q31_cluster) <- q31_cluster$cluster
+q31_cluster <- q31_cluster[, -c(1, 1)]
+
+q31_cluster <- rbind(apply(q31_cluster, 2, max), apply(q31_cluster, 2, min), q31_cluster)
+```
+
+
+```{r}
+q31_cluster_1 <- q31_cluster[3,]
+q31_cluster_2 <- q31_cluster[4,]
+q31_cluster_3 <- q31_cluster[5,]
+
+q31_cluster_1 <- rbind(rep(max(q31_cluster_1),15), rep(0,15), q31_cluster_1)
+radarchart(q31_cluster_1)
+
+q31_cluster_2 <- rbind(rep(max(q31_cluster_2),15), rep(0,15), q31_cluster_2)
+radarchart(q31_cluster_2)
+
+q31_cluster_3 <- rbind(rep(max(q31_cluster_3),15), rep(0,15), q31_cluster_3)
+radarchart(q31_cluster_3)
 ```
