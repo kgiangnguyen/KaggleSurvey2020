@@ -60,7 +60,7 @@ fviz_mca_var(mca, choice = "mca.cor",
 ```
 
 
-## Cluster
+## Run K-means clustering
 
 ```{r}
 set.seed(2020)
@@ -73,6 +73,8 @@ input_cluster <- cbind(input_data, mca$ind$coord, cluster)
 ggplot(input_cluster, aes(`Dim 1`, `Dim 2`, color = cluster)) + geom_point()
 ```
 
+
+## Analyze clusters
 
 ```{r, message=FALSE}
 get_mode <- function(v) {
