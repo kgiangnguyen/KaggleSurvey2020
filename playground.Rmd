@@ -96,4 +96,3 @@ input_cluster %>%
   group_by(cluster) %>%
   summarize(count = n())
 ```
-
