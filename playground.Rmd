@@ -1,0 +1,99 @@
+---
+title: "Playground"
+output: html_document
+---
+
+# Load packages
+
+```{r}
+library(dplyr)
+library(forcats)
+library(ggplot2)
+
+library(FactoMineR)
+library(factoextra)
+library(foreign)
+
+library(stats)
+library(clustMixType)
+library(klaR)
+```
+
+
+# Load data
+
+```{r}
+survey <- read.csv("kaggle_survey_2020_responses.csv")[-1, -1]
+
+for (i in 1:(dim(survey)[2]) ) {
+  survey[,i] <- as.factor(survey[,i])
+}
+```
+
+
+# Input analysis
+
+Input: targeted for students or data beginners
+
+* Q1: What is your age (#years)?
+* Q2: What is your gender?
+* Q3: In which country do you currently reside?
+* Q4: What is the highest level of formal education that you have attained or plan to attain within the next 2 years?
+* Q6: For how many years have you been writing code and/or programming?
+* Q15: For how many years have you used machine learning methods?
+
+```{r}
+input_data <- survey %>%
+  dplyr::select(Q1, Q2, Q3, Q4, Q6, Q15)
+```
+
+
+## Run MCA
+
+
+```{r}
+mca <- MCA(input_data, ncp = 2, graph = FALSE)
+
+fviz_mca_var(mca, choice = "mca.cor", 
+            repel = TRUE, # Avoid text overlapping (slow)
+            ggtheme = theme_minimal())
+```
+
+
+## Cluster
+
+```{r}
+set.seed(2020)
+
+kmeans <- kmeans(mca$ind$coord, centers = 3, nstart = 20)
+cluster <- as.factor(kmeans$cluster)
+
+input_cluster <- cbind(input_data, mca$ind$coord, cluster)
+
+ggplot(input_cluster, aes(`Dim 1`, `Dim 2`, color = cluster)) + geom_point()
+```
+
+
+```{r, message=FALSE}
+get_mode <- function(v) {
+  # Remove empty value
+  v <- as.data.frame(v)
+  v <- as.factor(v[v != ""])
+  uniqv <- unique(v)
+  uniqv[which.max(tabulate(match(v, uniqv)))]
+}
+
+input_cluster %>%
+  group_by(cluster) %>%
+  summarize(age = get_mode(Q1),
+            country = get_mode(Q3),
+            degree = get_mode(Q4),
+            yrs_of_coding = get_mode(Q6),
+            yrs_of_ml = get_mode(Q15))
+
+
+input_cluster %>%
+  group_by(cluster) %>%
+  summarize(count = n())
+```
+
