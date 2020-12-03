@@ -131,14 +131,14 @@ q7_cluster <- q7_cluster %>%
 rownames(q7_cluster) <- q7_cluster$cluster
 q7_cluster <- q7_cluster[, -c(1, 1)]
 
-q7_cluster <- rbind(apply(q7_cluster, 2, max), apply(q7_cluster, 2, min), q7_cluster)
+# q7_cluster <- rbind(apply(q7_cluster, 2, max), apply(q7_cluster, 2, min), q7_cluster)
 ```
 
 
 ```{r}
-q7_cluster_1 <- q7_cluster[3,]
-q7_cluster_2 <- q7_cluster[4,]
-q7_cluster_3 <- q7_cluster[5,]
+q7_cluster_1 <- q7_cluster[1,]
+q7_cluster_2 <- q7_cluster[2,]
+q7_cluster_3 <- q7_cluster[3,]
 
 q7_cluster_1 <- rbind(rep(max(q7_cluster_1),15), rep(0,15), q7_cluster_1)
 radarchart(q7_cluster_1)
@@ -205,16 +205,16 @@ q31_cluster <- q31_cluster %>%
             Other = sum(Q31_A_OTHER != ""))
 
 rownames(q31_cluster) <- q31_cluster$cluster
-q31_cluster <- q31_cluster[, -c(1, 1)]
+q31_cluster <- q31_cluster[, -1]
 
-q31_cluster <- rbind(apply(q31_cluster, 2, max), apply(q31_cluster, 2, min), q31_cluster)
+# q31_cluster <- rbind(apply(q31_cluster, 2, max), apply(q31_cluster, 2, min), q31_cluster)
 ```
 
 
 ```{r}
-q31_cluster_1 <- q31_cluster[3,]
-q31_cluster_2 <- q31_cluster[4,]
-q31_cluster_3 <- q31_cluster[5,]
+q31_cluster_1 <- q31_cluster[1,]
+q31_cluster_2 <- q31_cluster[2,]
+q31_cluster_3 <- q31_cluster[3,]
 
 q31_cluster_1 <- rbind(rep(max(q31_cluster_1),15), rep(0,15), q31_cluster_1)
 radarchart(q31_cluster_1)
@@ -224,4 +224,38 @@ radarchart(q31_cluster_2)
 
 q31_cluster_3 <- rbind(rep(max(q31_cluster_3),15), rep(0,15), q31_cluster_3)
 radarchart(q31_cluster_3)
+```
+
+
+```{r}
+q5 <- survey %>% dplyr::select(Q5)
+
+q5_cluster <- cbind(q5, cluster)
+
+q5_cluster <- q5_cluster %>%
+  group_by(cluster, Q5) %>%
+  summarize(count = n())
+
+# Need to find a way to remove null values automatically
+q5_cluster <- q5_cluster[-27,]
+
+q5_cluster <- q5_cluster %>% pivot_wider(id_cols = cluster, names_from = Q5, values_from = count)
+
+# rownames(q5_cluster) <- q5_cluster$cluster
+q5_cluster <- q5_cluster[, -1]
+```
+
+```{r}
+q5_cluster_1 <- q5_cluster[1,]
+q5_cluster_2 <- q5_cluster[2,]
+q5_cluster_3 <- q5_cluster[3,]
+
+q5_cluster_1 <- rbind(rep(max(q5_cluster_1),15), rep(0,15), q5_cluster_1)
+radarchart(q5_cluster_1)
+
+q5_cluster_2 <- rbind(rep(max(q5_cluster_2),15), rep(0,15), q5_cluster_2)
+radarchart(q5_cluster_2)
+
+q5_cluster_3 <- rbind(rep(max(q5_cluster_3),15), rep(0,15), q5_cluster_3)
+radarchart(q5_cluster_3)
 ```
