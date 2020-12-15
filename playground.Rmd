@@ -372,7 +372,38 @@ radarchart(q7_cluster_3, title = "Cluster 3")
 
 * Q8: What programming language would you recommend an aspiring data scientist to learn first?
 
+```{r, warning=FALSE, message=FALSE}
+q8 <- survey %>% dplyr::select(Q8)
 
+q8_cluster <- cbind(q8, cluster)
+
+q8_cluster <- q8_cluster %>%
+  group_by(cluster, Q8) %>%
+  summarize(count = n())
+
+# Remove rows with empty string
+q8_cluster <- q8_cluster[!apply(q8_cluster, 1, function(x) any(x == "")),] 
+
+# Turn data into wide format
+q8_cluster <- q8_cluster %>% pivot_wider(id_cols = cluster, names_from = Q8, values_from = count)
+q8_cluster <- q8_cluster[, -1]
+q8_cluster[is.na(q8_cluster)] <- 0
+
+# Filter each cluster
+q8_cluster_1 <- q8_cluster[1,]
+q8_cluster_2 <- q8_cluster[2,]
+q8_cluster_3 <- q8_cluster[3,]
+
+# Plot radar chart
+q8_cluster_1 <- rbind(rep(max(q8_cluster_1),13), rep(0,13), q8_cluster_1)
+radarchart(q8_cluster_1, title = "Cluster 1")
+
+q8_cluster_2 <- rbind(rep(max(q8_cluster_2),13), rep(0,13), q8_cluster_2)
+radarchart(q8_cluster_2, title = "Cluster 2")
+
+q8_cluster_3 <- rbind(rep(max(q8_cluster_3),13), rep(0,13), q8_cluster_3)
+radarchart(q8_cluster_3, title = "Cluster 3")
+```
 
 
 * Q9: Which of the following integrated development environments (IDE's) do you use on a regular basis?
@@ -413,6 +444,92 @@ radarchart(q9_cluster_2, title = "Cluster 2")
 
 q9_cluster_3 <- rbind(rep(max(q9_cluster_3),12), rep(0,12), q9_cluster_3)
 radarchart(q9_cluster_3, title = "Cluster 3")
+```
+
+
+* Q14: What data visualization libraries or tools do you use on a regular basis?
+
+```{r, warning=FALSE, message=FALSE}
+q14 <- survey %>%
+  dplyr::select(Q14_Part_1, Q14_Part_2, Q14_Part_3, Q14_Part_4, Q14_Part_5, Q14_Part_6, Q14_Part_7, Q14_Part_8, Q14_Part_9, Q14_Part_10, Q14_Part_11, Q14_OTHER)
+
+q14_cluster <- cbind(q14, cluster)
+
+q14_cluster <- q14_cluster %>%
+  group_by(cluster) %>%
+  summarize(`Matplotlib` = sum(Q14_Part_1 != ""),
+            `Seaborn` = sum(Q14_Part_2 != ""),
+            `Plotly / Plotly Express` = sum(Q14_Part_3 != ""),
+            `Ggplot / ggplot2` = sum(Q14_Part_4 != ""),
+            `Shiny` = sum(Q14_Part_5 != ""),
+            `D3 js` = sum(Q14_Part_6 != ""),
+            `Altair` = sum(Q14_Part_7 != ""),
+            `Bokeh` = sum(Q14_Part_8 != ""),
+            `Geoplotlib`= sum(Q14_Part_9 != ""),
+            `Leaflet / Folium` = sum(Q14_Part_10 != ""),
+            `None` = sum(Q14_Part_11 != ""),
+            `Other` = sum(Q14_OTHER != ""))
+
+rownames(q14_cluster) <- q14_cluster$cluster
+q14_cluster <- q14_cluster[, -1]
+
+q14_cluster_1 <- q14_cluster[1,]
+q14_cluster_2 <- q14_cluster[2,]
+q14_cluster_3 <- q14_cluster[3,]
+
+q14_cluster_1 <- rbind(rep(max(q14_cluster_1),12), rep(0,12), q14_cluster_1)
+radarchart(q14_cluster_1, title = "Cluster 1")
+
+q14_cluster_2 <- rbind(rep(max(q14_cluster_2),12), rep(0,12), q14_cluster_2)
+radarchart(q14_cluster_2, title = "Cluster 2")
+
+q14_cluster_3 <- rbind(rep(max(q14_cluster_3),12), rep(0,12), q14_cluster_3)
+radarchart(q14_cluster_3, title = "Cluster 3")
+```
+
+
+* Q16: Which of the following big data products (relational databases, data warehouses, data lakes, or similar) do you use on a regular basis?
+
+```{r, warning=FALSE, message=FALSE}
+q16 <- survey %>%
+  dplyr::select(Q16_Part_1, Q16_Part_2, Q16_Part_3, Q16_Part_4, Q16_Part_5, Q16_Part_6, Q16_Part_7, Q16_Part_8, Q16_Part_9, Q16_Part_10, Q16_Part_11, Q16_Part_11, Q16_Part_12, Q16_Part_13,Q16_Part_14, Q16_Part_15, Q16_OTHER)
+
+q16_cluster <- cbind(q16, cluster)
+
+q16_cluster <- q16_cluster %>%
+  group_by(cluster) %>%
+  summarize(`Scikit-learn` = sum(Q16_Part_1 != ""),
+            `TensorFlow` = sum(Q16_Part_2 != ""),
+            `Keras` = sum(Q16_Part_3 != ""),
+            `PyTorch` = sum(Q16_Part_4 != ""),
+            `Fast.ai` = sum(Q16_Part_5 != ""),
+            `MXNet` = sum(Q16_Part_6 != ""),
+            `Xgboost` = sum(Q16_Part_7 != ""),
+            `LightGBM` = sum(Q16_Part_8 != ""),
+            `CatBoost`= sum(Q16_Part_9 != ""),
+            `Prophet` = sum(Q16_Part_10 != ""),
+            `H2O 3` = sum(Q16_Part_11 != ""),
+            `Caret` = sum(Q16_Part_12 != ""),
+            `Tidymodels` = sum(Q16_Part_13 != ""),
+            `JAX` = sum(Q16_Part_14 != ""),
+            `None` = sum(Q16_Part_15 != ""),
+            `Other` = sum(Q16_OTHER != ""))
+
+rownames(q16_cluster) <- q16_cluster$cluster
+q16_cluster <- q16_cluster[, -1]
+
+q16_cluster_1 <- q16_cluster[1,]
+q16_cluster_2 <- q16_cluster[2,]
+q16_cluster_3 <- q16_cluster[3,]
+
+q16_cluster_1 <- rbind(rep(max(q16_cluster_1),16), rep(0,16), q16_cluster_1)
+radarchart(q16_cluster_1, title = "Cluster 1")
+
+q16_cluster_2 <- rbind(rep(max(q16_cluster_2),16), rep(0,16), q16_cluster_2)
+radarchart(q16_cluster_2, title = "Cluster 2")
+
+q16_cluster_3 <- rbind(rep(max(q16_cluster_3),16), rep(0,16), q16_cluster_3)
+radarchart(q16_cluster_3, title = "Cluster 3")
 ```
 
 
