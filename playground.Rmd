@@ -3,9 +3,9 @@ title: "Playground"
 output: html_document
 ---
 
-# Load packages
 
-```{r}
+```{r, include=FALSE}
+# Load packages
 library(dplyr)
 library(tidyr)
 library(forcats)
@@ -23,9 +23,8 @@ library(klaR)
 ```
 
 
+```{r, include=FALSE}
 # Load data
-
-```{r}
 survey <- read.csv("kaggle_survey_2020_responses.csv")[-1, -1]
 
 for (i in 1:(dim(survey)[2]) ) {
@@ -45,7 +44,7 @@ Targeted for students or data beginners
 * Q6: For how many years have you been writing code and/or programming?
 * Q15: For how many years have you used machine learning methods?
 
-```{r}
+```{r, include=FALSE}
 input_data <- survey %>%
   dplyr::select(Q1, Q2, Q3, Q4, Q6, Q15)
 ```
@@ -79,7 +78,7 @@ ggplot(input_cluster, aes(`Dim 1`, `Dim 2`, color = cluster)) + geom_point()
 
 ## Analyze clusters
 
-```{r, message=FALSE}
+```{r, message=FALSE, echo=FALSE}
 get_mode <- function(v) {
   # Remove empty value
   v <- as.data.frame(v)
@@ -109,7 +108,7 @@ input_cluster %>%
 
 * Q5: Select the title most similar to your current role (or most recent title if retired)
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 q5 <- survey %>% dplyr::select(Q5)
 
 q5_cluster <- cbind(q5, cluster)
@@ -144,7 +143,7 @@ radarchart(q5_cluster_3, title = "Cluster 3")
 
 * Q20: What is the size of the company where you are employed?
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 q20 <- survey %>% dplyr::select(Q20)
 
 q20_cluster <- cbind(q20, cluster)
@@ -179,7 +178,7 @@ radarchart(q20_cluster_3, title = "Cluster 3")
 
 * Q21: Approximately how many individuals are responsible for data science workloads at your place at business?
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 q21 <- survey %>% dplyr::select(Q21)
 
 q21_cluster <- cbind(q21, cluster)
@@ -214,7 +213,7 @@ radarchart(q21_cluster_3, title = "Cluster 3")
 
 * Q22: Does your current employer incorporate machine learning methods into their business?
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 q22 <- survey %>% dplyr::select(Q22)
 
 q22_cluster <- cbind(q22, cluster)
@@ -249,7 +248,7 @@ radarchart(q22_cluster_3, title = "Cluster 3")
 
 * Q23: Select any activities that make up an important part of your role at work
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 q23 <- survey %>%
   dplyr::select(Q23_Part_1, Q23_Part_2, Q23_Part_3, Q23_Part_4, Q23_Part_5, Q23_Part_6, Q23_Part_7, Q23_OTHER)
 
@@ -287,7 +286,7 @@ radarchart(q23_cluster_3, title = "Cluster 3")
 
 * Q24: What is your current yearly compensation (approximate $USD)?
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 q24 <- survey %>% 
   mutate(Q24_Level = ifelse(Q24 %in% c(""), "", ifelse(Q24 %in% c("$0-999", "1,000-1,999", "2,000-2,999", "3,000-3,999", "4,000-4,999", "5,000-7,499", "7,500-9,999", "10,000-14,999", "15,000-19,999", "20,000-24,999", "25,000-29,999", "30,000-39,999", "40,000-49,999"), "Level 1 ($0-49,999)", ifelse(Q24 %in% c("50,000-59,999", "60,000-69,999", "70,000-79,999", "80,000-89,999", "90,000-99,999"), "Level 2 ($50,000-99,999)", ifelse(Q24 %in% c("100,000-124,999", "125,000-149,999"), "Level 3 ($100,000-149,999)", ifelse(Q24 %in% c("150,000-199,999"), "Level 4 ($150,000-199,999)", ifelse(Q24 %in% c("200,000-249,999", "250,000-299,999"), "Level 5 ($200,000-299,999)", ifelse(Q24 %in% c("300,000-500,000"), "Level 6 ($300,000-500,000)", "Level  7 (> $500,000)")))))))) %>%
   dplyr::select(Q24, Q24_Level)
@@ -327,7 +326,7 @@ radarchart(q24_cluster_3, title = "Cluster 3")
 
 * Q7: What programming languages do you use on a regular basis?
 
-```{r}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 q7 <- survey %>%
   dplyr::select(Q7_Part_1, Q7_Part_2, Q7_Part_3, Q7_Part_4, Q7_Part_5, Q7_Part_6, Q7_Part_7, Q7_Part_8, Q7_Part_9, Q7_Part_10, Q7_Part_11, Q7_Part_12, Q7_OTHER)
 
@@ -371,7 +370,7 @@ radarchart(q7_cluster_3, title = "Cluster 3")
 
 * Q8: What programming language would you recommend an aspiring data scientist to learn first?
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 q8 <- survey %>% dplyr::select(Q8)
 
 q8_cluster <- cbind(q8, cluster)
@@ -407,7 +406,7 @@ radarchart(q8_cluster_3, title = "Cluster 3")
 
 * Q9: Which of the following integrated development environments (IDE's) do you use on a regular basis?
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 q9 <- survey %>%
   dplyr::select(Q9_Part_1, Q9_Part_2, Q9_Part_3, Q9_Part_4, Q9_Part_5, Q9_Part_6, Q9_Part_7, Q9_Part_8, Q9_Part_9, Q9_Part_10, Q9_Part_11, Q9_OTHER)
 
@@ -448,7 +447,7 @@ radarchart(q9_cluster_3, title = "Cluster 3")
 
 * Q14: What data visualization libraries or tools do you use on a regular basis?
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 q14 <- survey %>%
   dplyr::select(Q14_Part_1, Q14_Part_2, Q14_Part_3, Q14_Part_4, Q14_Part_5, Q14_Part_6, Q14_Part_7, Q14_Part_8, Q14_Part_9, Q14_Part_10, Q14_Part_11, Q14_OTHER)
 
@@ -489,7 +488,7 @@ radarchart(q14_cluster_3, title = "Cluster 3")
 
 * Q16: Which of the following big data products (relational databases, data warehouses, data lakes, or similar) do you use on a regular basis?
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 q16 <- survey %>%
   dplyr::select(Q16_Part_1, Q16_Part_2, Q16_Part_3, Q16_Part_4, Q16_Part_5, Q16_Part_6, Q16_Part_7, Q16_Part_8, Q16_Part_9, Q16_Part_10, Q16_Part_11, Q16_Part_11, Q16_Part_12, Q16_Part_13,Q16_Part_14, Q16_Part_15, Q16_OTHER)
 
@@ -534,7 +533,7 @@ radarchart(q16_cluster_3, title = "Cluster 3")
 
 * Q29-A: Which of the following big data products (relational databases, data warehouses, data lakes, or similar) do you use on a regular basis?
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 q29 <- survey %>%
   dplyr::select(Q29_A_Part_1, Q29_A_Part_2, Q29_A_Part_3, Q29_A_Part_4, Q29_A_Part_5, Q29_A_Part_6, Q29_A_Part_7, Q29_A_Part_8, Q29_A_Part_9, Q29_A_Part_10, Q29_A_Part_11, Q29_A_Part_12, Q29_A_Part_13, Q29_A_Part_14, Q29_A_Part_15, Q29_A_Part_16, Q29_A_Part_17, Q29_A_OTHER)
 
@@ -582,7 +581,7 @@ radarchart(q29_cluster_3, title = "Cluster 3")
 
 * Q31-A: Which of the following business intelligence tools do you use on a regular basis? (Select all that apply)
 
-```{r}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 q31 <- survey %>%
   dplyr::select(Q31_A_Part_1, Q31_A_Part_2, Q31_A_Part_3, Q31_A_Part_4, Q31_A_Part_5, Q31_A_Part_6, Q31_A_Part_7, Q31_A_Part_8, Q31_A_Part_9, Q31_A_Part_10, Q31_A_Part_11, Q31_A_Part_12, Q31_A_Part_13, Q31_A_Part_14, Q31_A_OTHER)
 
@@ -628,7 +627,7 @@ radarchart(q31_cluster_3, title = "Cluster 3")
 
 * Q36: Where do you publicly share or deploy your data analysis or machine learning applications?
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 q36 <- survey %>%
   dplyr::select(Q36_Part_1, Q36_Part_2, Q36_Part_3, Q36_Part_4, Q36_Part_5, Q36_Part_6, Q36_Part_7, Q36_Part_8, Q36_Part_9, Q36_OTHER)
 
@@ -670,7 +669,7 @@ radarchart(q36_cluster_3, title = "Cluster 3")
 
 * Q37: On which platforms have you begun or completed data science courses?
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 q37 <- survey %>%
   dplyr::select(Q37_Part_1, Q37_Part_2, Q37_Part_3, Q37_Part_4, Q37_Part_5, Q37_Part_6, Q37_Part_7, Q37_Part_8, Q37_Part_9, Q37_Part_10, Q37_Part_11, Q37_OTHER)
 
@@ -711,7 +710,7 @@ radarchart(q37_cluster_3, title = "Cluster 3")
 
 * Q38: What is the primary tool that you use at work or school to analyze data?
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 q38 <- survey %>% dplyr::select(Q38)
 
 q38_cluster <- cbind(q38, cluster)
@@ -747,7 +746,7 @@ radarchart(q38_cluster_3, title = "Cluster 3")
 
 * Q39: Who/what are your favorite media sources that report on data science topics?
 
-```{r, warning=FALSE, message=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE}
 q39 <- survey %>%
   dplyr::select(Q39_Part_1, Q39_Part_2, Q39_Part_3, Q39_Part_4, Q39_Part_5, Q39_Part_6, Q39_Part_7, Q39_Part_8, Q39_Part_9, Q39_Part_10, Q39_Part_11, Q39_OTHER)
 
