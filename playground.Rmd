@@ -49,6 +49,92 @@ input_data <- survey %>%
   dplyr::select(Q1, Q2, Q3, Q4, Q6, Q15)
 ```
 
+```{r, include=FALSE}
+input_data$Q3_Continent <- ""
+
+# Africa
+input_data$Q3_Continent[input_data$Q3 == "Algeria"] <- "Africa" 
+input_data$Q3_Continent[input_data$Q3 == "Egypt"] <- "Africa" 
+input_data$Q3_Continent[input_data$Q3 == "Kenya"] <- "Africa" 
+input_data$Q3_Continent[input_data$Q3 == "Morocco"] <- "Africa" 
+input_data$Q3_Continent[input_data$Q3 == "Nigeria"] <- "Africa"
+input_data$Q3_Continent[input_data$Q3 == "South Africa"] <- "Africa" 
+
+# Asia
+input_data$Q3_Continent[input_data$Q3 == "Bangladesh"] <- "Asia"
+input_data$Q3_Continent[input_data$Q3 == "China"] <- "Asia" 
+input_data$Q3_Continent[input_data$Q3 == "Hong Kong (S.A.R.)"] <- "Asia" 
+input_data$Q3_Continent[input_data$Q3 == "India"] <- "Asia" 
+input_data$Q3_Continent[input_data$Q3 == "Indonesia"] <- "Asia" 
+input_data$Q3_Continent[input_data$Q3 == "Israel"] <- "Asia" 
+input_data$Q3_Continent[input_data$Q3 == "Japan"] <- "Asia" 
+input_data$Q3_Continent[input_data$Q3 == "Malaysia"] <- "Asia"
+input_data$Q3_Continent[input_data$Q3 == "Pakistan"] <- "Asia" 
+input_data$Q3_Continent[input_data$Q3 == "Philippines"] <- "Asia"
+input_data$Q3_Continent[input_data$Q3 == "Republic of Korea"] <- "Asia" 
+input_data$Q3_Continent[input_data$Q3 == "Saudi Arabia"] <- "Asia" 
+input_data$Q3_Continent[input_data$Q3 == "Singapore"] <- "Asia" 
+input_data$Q3_Continent[input_data$Q3 == "South Korea"] <- "Asia"
+input_data$Q3_Continent[input_data$Q3 == "Taiwan"] <- "Asia" 
+input_data$Q3_Continent[input_data$Q3 == "Thailand"] <- "Asia"
+input_data$Q3_Continent[input_data$Q3 == "Tunisia"] <- "Asia"
+input_data$Q3_Continent[input_data$Q3 == "Turkey"] <- "Asia" 
+input_data$Q3_Continent[input_data$Q3 == "Viet Nam"] <- "Asia" 
+
+# Europe
+input_data$Q3_Continent[input_data$Q3 == "Austria"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Belgium"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Bulgaria"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Croatia"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Czech Republic"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Denmark"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Estonia"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Finland"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "France"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Germany"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Greece"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Hungary"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Ireland"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Italy"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Lativia"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Lithuania"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Netherlands"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Poland"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Portugal"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Romania"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Slovakia"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Slovenia"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Spain"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Sweden"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "United Kingdom of Great Britain and Northern Ireland"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Russia"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Switzerland"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Ukraine"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Belarus"] <- "Europe"
+input_data$Q3_Continent[input_data$Q3 == "Norway"] <- "Europe"
+
+# North America
+input_data$Q3_Continent[input_data$Q3 == "Canada"] <- "North America" 
+input_data$Q3_Continent[input_data$Q3 == "Mexico"] <- "North America" 
+input_data$Q3_Continent[input_data$Q3 == "United States of America"] <- "North America" 
+
+# South America
+input_data$Q3_Continent[input_data$Q3 == "Argentina"] <- "South America" 
+input_data$Q3_Continent[input_data$Q3 == "Brazil"] <- "South America" 
+input_data$Q3_Continent[input_data$Q3 == "Chile"] <- "South America" 
+input_data$Q3_Continent[input_data$Q3 == "Colombia"] <- "South America" 
+input_data$Q3_Continent[input_data$Q3 == "Peru"] <- "South America" 
+
+# Oceania
+input_data$Q3_Continent[input_data$Q3 == "Australia"] <- "Oceania" 
+input_data$Q3_Continent[input_data$Q3 == "New Zealand"] <- "Oceania" 
+
+input_data <- input_data[input_data$Q3_Continent != "",]
+input_data <- input_data %>%
+  mutate(Q3_Continent = as.factor(Q3_Continent)) %>%
+  dplyr::select(-Q3)
+```
+
 
 ## Run MCA
 
@@ -90,7 +176,7 @@ get_mode <- function(v) {
 input_cluster %>%
   group_by(cluster) %>%
   summarize(age = get_mode(Q1),
-            country = get_mode(Q3),
+            continent = get_mode(Q3_Continent),
             degree = get_mode(Q4),
             yrs_of_coding = get_mode(Q6),
             yrs_of_ml = get_mode(Q15))
