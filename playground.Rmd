@@ -32,6 +32,8 @@ for (i in 1:(dim(survey)[2]) ) {
 }
 ```
 
+# Introduction
+
 
 # Input
 
@@ -54,6 +56,7 @@ input_data$Q3_Continent <- ""
 
 # Africa
 input_data$Q3_Continent[input_data$Q3 == "Algeria"] <- "Africa" 
+input_data$Q3_Continent[input_data$Q3 == "Ghana"] <- "Africa" 
 input_data$Q3_Continent[input_data$Q3 == "Egypt"] <- "Africa" 
 input_data$Q3_Continent[input_data$Q3 == "Kenya"] <- "Africa" 
 input_data$Q3_Continent[input_data$Q3 == "Morocco"] <- "Africa" 
@@ -66,7 +69,8 @@ input_data$Q3_Continent[input_data$Q3 == "China"] <- "Asia"
 input_data$Q3_Continent[input_data$Q3 == "Hong Kong (S.A.R.)"] <- "Asia" 
 input_data$Q3_Continent[input_data$Q3 == "India"] <- "Asia" 
 input_data$Q3_Continent[input_data$Q3 == "Indonesia"] <- "Asia" 
-input_data$Q3_Continent[input_data$Q3 == "Israel"] <- "Asia" 
+input_data$Q3_Continent[input_data$Q3 == "Indonesia"] <- "Asia" 
+input_data$Q3_Continent[input_data$Q3 == "Iran, Islamic Republic of..."] <- "Asia" 
 input_data$Q3_Continent[input_data$Q3 == "Japan"] <- "Asia" 
 input_data$Q3_Continent[input_data$Q3 == "Malaysia"] <- "Asia"
 input_data$Q3_Continent[input_data$Q3 == "Pakistan"] <- "Asia" 
@@ -75,6 +79,7 @@ input_data$Q3_Continent[input_data$Q3 == "Republic of Korea"] <- "Asia"
 input_data$Q3_Continent[input_data$Q3 == "Saudi Arabia"] <- "Asia" 
 input_data$Q3_Continent[input_data$Q3 == "Singapore"] <- "Asia" 
 input_data$Q3_Continent[input_data$Q3 == "South Korea"] <- "Asia"
+input_data$Q3_Continent[input_data$Q3 == "Sri Lanka"] <- "Asia" 
 input_data$Q3_Continent[input_data$Q3 == "Taiwan"] <- "Asia" 
 input_data$Q3_Continent[input_data$Q3 == "Thailand"] <- "Asia"
 input_data$Q3_Continent[input_data$Q3 == "Tunisia"] <- "Asia"
@@ -129,15 +134,19 @@ input_data$Q3_Continent[input_data$Q3 == "Peru"] <- "South America"
 input_data$Q3_Continent[input_data$Q3 == "Australia"] <- "Oceania" 
 input_data$Q3_Continent[input_data$Q3 == "New Zealand"] <- "Oceania" 
 
-input_data <- input_data[input_data$Q3_Continent != "",]
+# Other
+input_data$Q3_Continent[input_data$Q3 == "Other"] <- "Other"
+
+
 input_data <- input_data %>%
   mutate(Q3_Continent = as.factor(Q3_Continent)) %>%
   dplyr::select(-Q3)
 ```
 
 
-## Run MCA
+## Multiple correspondence analysis (MCA)
 
+Since we have 6 input questions corresponding to 6 dimensions, summarizing and visualizing data can be difficult in high-dimensional space. Thus, we propose using correspondence analysis (CA), an extension of principal component analysis suited to explore relationships among qualitative variables. This technique is generally used to analyze a data set from survey to identify the associations between variable categories. Since our data contains more than two categorical variables, we choose to use multiple correspondence analysis (MCA) as it can be applied to input of multiple dimensions.
 
 ```{r}
 mca <- MCA(input_data, ncp = 2, graph = FALSE)
@@ -148,7 +157,7 @@ fviz_mca_var(mca, choice = "mca.cor",
 ```
 
 
-## Run K-means clustering
+## K-means clustering
 
 ```{r}
 set.seed(2020)
@@ -869,3 +878,6 @@ radarchart(q39_cluster_2, title = "Cluster 2")
 q39_cluster_3 <- rbind(rep(max(q39_cluster_3),12), rep(0,12), q39_cluster_3)
 radarchart(q39_cluster_3, title = "Cluster 3")
 ```
+
+
+# Conclusion
