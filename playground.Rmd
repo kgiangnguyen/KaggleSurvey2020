@@ -146,7 +146,7 @@ input_data <- input_data %>%
 
 ## Multiple correspondence analysis (MCA)
 
-Since we have 6 input questions corresponding to 6 dimensions, summarizing and visualizing data can be difficult in high-dimensional space. Thus, we propose using correspondence analysis (CA), an extension of principal component analysis suited to explore relationships among qualitative variables. This technique is generally used to analyze a data set from survey to identify the associations between variable categories. Since our data contains more than two categorical variables, we choose to use multiple correspondence analysis (MCA) as it can be applied to input of multiple dimensions.
+Since we have 6 input questions corresponding to 6 dimensions, summarizing and visualizing data can be difficult while clustering is not effective in high-dimensional space. Thus, we propose using correspondence analysis (CA), an extension of principal component analysis suited to explore relationships among qualitative variables. This technique is generally used to analyze a data set from survey to identify the associations between variable categories. Since our data contains more than two categorical variables, we choose to use multiple correspondence analysis (MCA) as it can be applied to input of multiple dimensions. However, MCA has a disadvantage that it tends not to explain all the variance while looking at associations. Regardless, ...
 
 ```{r}
 mca <- MCA(input_data, ncp = 2, graph = FALSE)
@@ -158,6 +158,9 @@ fviz_mca_var(mca, choice = "mca.cor",
 
 
 ## K-means clustering
+
+Brief about K-means
+Why choose 3 clusters?
 
 ```{r}
 set.seed(2020)
