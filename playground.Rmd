@@ -1,5 +1,5 @@
 ---
-title: "Playground"
+title: "Alice in the Data Science World: A Tale Through the Lens of Radar Chart"
 output: html_document
 ---
 
@@ -11,7 +11,7 @@ library(tidyr)
 library(forcats)
 
 library(ggplot2)
-library(fmsb)
+library(fmsb) #radarchart
 
 library(FactoMineR)
 library(factoextra)
@@ -35,7 +35,7 @@ for (i in 1:(dim(survey)[2]) ) {
 # Introduction
 
 
-# Input
+# Clustering analysis
 
 Targeted for students or data beginners
 
@@ -144,11 +144,11 @@ input_data <- input_data %>%
 ```
 
 
-## Multiple correspondence analysis (MCA)
+## Method
 
-Since we have 6 input questions corresponding to 6 dimensions, summarizing and visualizing data can be difficult while clustering is not effective in high-dimensional space. Thus, we propose using correspondence analysis (CA), an extension of principal component analysis suited to explore relationships among qualitative variables. This technique is generally used to analyze a data set from survey to identify the associations between variable categories. Since our data contains more than two categorical variables, we choose to use multiple correspondence analysis (MCA) as it can be applied to input of multiple dimensions. However, MCA has a disadvantage that it tends not to explain all the variance while looking at associations. Regardless, ...
+Since we have 6 input questions corresponding to 6 dimensions, summarizing and visualizing data can be difficult while clustering might be ineffective in high-dimensional space. To overcome these limitations, we propose first using correspondence analysis (CA), an extension of principal component analysis suited to explore relationships among qualitative variables. This technique is generally used to analyze a data set from survey to identify the associations between variable categories. Since our data contains more than two categorical variables, we choose to use multiple correspondence analysis (MCA) as it can be applied to input of multiple dimensions. However, MCA has a disadvantage that it tends not to explain all the variance while looking at associations. For the purpose of this analysis, we select the first two dimensions which altogether account for 10.5% of the total variances in the survey's answers.
 
-```{r}
+```{r, include=FALSE}
 mca <- MCA(input_data, ncp = 2, graph = FALSE)
 
 fviz_mca_var(mca, choice = "mca.cor", 
@@ -156,13 +156,9 @@ fviz_mca_var(mca, choice = "mca.cor",
             ggtheme = theme_minimal())
 ```
 
+Our goal is to better understand the specific communities represented in the survey. Thus, we propose using K-means clustering, one of the simplest and most popular unsupervised technique that aims to group similar data points together and discover underlying patterns. To process the learning data and detect clusters, K-means identifies *k* number of centroids, and then allocates every data point to the nearest cluster, while keeping the centroids as small as possible. After examining different possible values of *k*, we decide to pick *k = 3*. This will help the model to avoid overfitting while ensuring its descriptive performance. Contextually, we believe 3 is a suitable number of groups of similar respondents that will allow us to dive deep into the survey dataset and tell the diverse stories of data scientists from around the world.
 
-## K-means clustering
-
-Brief about K-means
-Why choose 3 clusters?
-
-```{r}
+```{r, include=FALSE}
 set.seed(2020)
 
 kmeans <- kmeans(mca$ind$coord, centers = 3, nstart = 20)
@@ -170,11 +166,11 @@ cluster <- as.factor(kmeans$cluster)
 
 input_cluster <- cbind(input_data, mca$ind$coord, cluster)
 
-ggplot(input_cluster, aes(`Dim 1`, `Dim 2`, color = cluster)) + geom_point()
+ggplot(input_cluster, aes(`Dim 1`, `Dim 2`, color = cluster)) + geom_point() + theme_minimal()
 ```
 
 
-## Analyze clusters
+## Results
 
 ```{r, message=FALSE, echo=FALSE}
 get_mode <- function(v) {
@@ -206,7 +202,7 @@ input_cluster %>%
 
 * Q5: Select the title most similar to your current role (or most recent title if retired)
 
-```{r, warning=FALSE, message=FALSE, echo=FALSE}
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=5, fig.width=15, out.retina=1}
 q5 <- survey %>% dplyr::select(Q5)
 
 q5_cluster <- cbind(q5, cluster)
@@ -228,14 +224,22 @@ q5_cluster_2 <- q5_cluster[2,]
 q5_cluster_3 <- q5_cluster[3,]
 
 # Plot radar chart
+layout(matrix(c(1, 2, 3), nrow = 1, byrow = TRUE))
+
 q5_cluster_1 <- rbind(rep(max(q5_cluster_1),13), rep(0,13), q5_cluster_1)
-radarchart(q5_cluster_1, title = "Cluster 1")
+radarchart(q5_cluster_1, title = "Cluster 1", 
+           pcol = '#FCC02A', pfcol = alpha('#FDDF94', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 
 q5_cluster_2 <- rbind(rep(max(q5_cluster_2),13), rep(0,13), q5_cluster_2)
-radarchart(q5_cluster_2, title = "Cluster 2")
+radarchart(q5_cluster_2, title = "Cluster 2",
+           pcol = '#01B6BD', pfcol = alpha('#80DADE', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 
 q5_cluster_3 <- rbind(rep(max(q5_cluster_3),13), rep(0,13), q5_cluster_3)
-radarchart(q5_cluster_3, title = "Cluster 3")
+radarchart(q5_cluster_3, title = "Cluster 3",
+           pcol = '#431D53', pfcol = alpha('#A18EA9', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
 
