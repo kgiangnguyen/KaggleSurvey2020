@@ -12,6 +12,8 @@ library(forcats)
 
 library(ggplot2)
 library(fmsb) #radarchart
+library(knitr)
+library(kableExtra)
 
 library(FactoMineR)
 library(factoextra)
@@ -172,7 +174,7 @@ ggplot(input_cluster, aes(`Dim 1`, `Dim 2`, color = cluster)) + geom_point() + t
 
 ## Results
 
-```{r, message=FALSE, echo=FALSE}
+```{r, include=FALSE}
 get_mode <- function(v) {
   # Remove empty value
   v <- as.data.frame(v)
@@ -180,20 +182,39 @@ get_mode <- function(v) {
   uniqv <- unique(v)
   uniqv[which.max(tabulate(match(v, uniqv)))]
 }
-
-input_cluster %>%
-  group_by(cluster) %>%
-  summarize(age = get_mode(Q1),
-            continent = get_mode(Q3_Continent),
-            degree = get_mode(Q4),
-            yrs_of_coding = get_mode(Q6),
-            yrs_of_ml = get_mode(Q15))
-
-
-input_cluster %>%
-  group_by(cluster) %>%
-  summarize(count = n())
 ```
+
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+clust_dist <- input_cluster %>%
+  group_by(cluster) %>%
+  summarize(Count = n()) %>%
+  rename(Cluster = cluster)
+
+clust_dist %>%
+  kbl(align = "c") %>%
+  kable_styling("hover", full_width = F)
+```
+
+Text goes here
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+clust_info <- input_cluster %>%
+  group_by(cluster) %>%
+  summarize(Age = get_mode(Q1),
+            Continent = get_mode(Q3_Continent),
+            Degree = get_mode(Q4),
+            `Years of Coding` = get_mode(Q6),
+            `Years of Machine Learning` = get_mode(Q15)) %>%
+  mutate(Degree = ifelse(Degree == "Masterâ€™s degree", "Master's Degree", ifelse(Degree == "Bachelorâ€™s degree", "Bachelor's degree", Degree))) %>%
+  rename(Cluster = cluster)
+
+clust_info %>%
+  kbl(align = "c") %>%
+  kable_styling("hover", full_width = F)
+```
+
+Text goes here
 
 
 # Output
