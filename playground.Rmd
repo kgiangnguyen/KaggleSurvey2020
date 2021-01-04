@@ -206,7 +206,7 @@ clust_info <- input_cluster %>%
             Degree = get_mode(Q4),
             `Years of Coding` = get_mode(Q6),
             `Years of Machine Learning` = get_mode(Q15)) %>%
-  mutate(Degree = ifelse(Degree == "Masterâ€™s degree", "Master's Degree", ifelse(Degree == "Bachelorâ€™s degree", "Bachelor's degree", Degree))) %>%
+  mutate(Degree = ifelse(Degree == "Masterâ€™s degree", "Master's degree", ifelse(Degree == "Bachelorâ€™s degree", "Bachelor's degree", Degree))) %>%
   rename(Cluster = cluster)
 
 clust_info %>%
@@ -219,271 +219,152 @@ Text goes here
 
 # Output
 
-## Insights about jobs, salaries, companies
+## Insights about learning process
 
-* Q5: Select the title most similar to your current role (or most recent title if retired)
-
-```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=5, fig.width=15, out.retina=1}
-q5 <- survey %>% dplyr::select(Q5)
-
-q5_cluster <- cbind(q5, cluster)
-
-q5_cluster <- q5_cluster %>%
-  group_by(cluster, Q5) %>%
-  summarize(count = n())
-
-# Remove rows with empty string
-q5_cluster <- q5_cluster[!apply(q5_cluster, 1, function(x) any(x == "")),] 
-
-# Turn data into wide format
-q5_cluster <- q5_cluster %>% pivot_wider(id_cols = cluster, names_from = Q5, values_from = count)
-q5_cluster <- q5_cluster[, -1]
-
-# Filter each cluster
-q5_cluster_1 <- q5_cluster[1,]
-q5_cluster_2 <- q5_cluster[2,]
-q5_cluster_3 <- q5_cluster[3,]
-
-# Plot radar chart
-layout(matrix(c(1, 2, 3), nrow = 1, byrow = TRUE))
-
-q5_cluster_1 <- rbind(rep(max(q5_cluster_1),13), rep(0,13), q5_cluster_1)
-radarchart(q5_cluster_1, title = "Cluster 1", 
-           pcol = '#FCC02A', pfcol = alpha('#FDDF94', 0.3), plwd = 2,
-           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
-
-q5_cluster_2 <- rbind(rep(max(q5_cluster_2),13), rep(0,13), q5_cluster_2)
-radarchart(q5_cluster_2, title = "Cluster 2",
-           pcol = '#01B6BD', pfcol = alpha('#80DADE', 0.3), plwd = 2,
-           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
-
-q5_cluster_3 <- rbind(rep(max(q5_cluster_3),13), rep(0,13), q5_cluster_3)
-radarchart(q5_cluster_3, title = "Cluster 3",
-           pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
-           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
-```
-
-
-* Q20: What is the size of the company where you are employed?
+* Q37: On which platforms have you begun or completed data science courses?
 
 ```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=5, fig.width=15, out.retina=1}
-q20 <- survey %>% dplyr::select(Q20)
+q37 <- survey %>%
+  dplyr::select(Q37_Part_1, Q37_Part_2, Q37_Part_3, Q37_Part_4, Q37_Part_5, Q37_Part_6, Q37_Part_7, Q37_Part_8, Q37_Part_9, Q37_Part_10, Q37_Part_11, Q37_OTHER)
 
-q20_cluster <- cbind(q20, cluster)
+q37_cluster <- cbind(q37, cluster)
 
-q20_cluster <- q20_cluster %>%
-  group_by(cluster, Q20) %>%
-  summarize(count = n())
-
-# Remove rows with empty string
-q20_cluster <- q20_cluster[!apply(q20_cluster, 1, function(x) any(x == "")),] 
-
-# Turn data into wide format
-q20_cluster <- q20_cluster %>% pivot_wider(id_cols = cluster, names_from = Q20, values_from = count)
-q20_cluster <- q20_cluster[, -1]
-
-# Filter each cluster
-q20_cluster_1 <- q20_cluster[1,]
-q20_cluster_2 <- q20_cluster[2,]
-q20_cluster_3 <- q20_cluster[3,]
-
-# Plot radar chart
-layout(matrix(c(1, 2, 3), nrow = 1, byrow = TRUE))
-
-q20_cluster_1 <- rbind(rep(max(q20_cluster_1),5), rep(0,5), q20_cluster_1)
-radarchart(q20_cluster_1, title = "Cluster 1", 
-           pcol = '#FCC02A', pfcol = alpha('#FDDF94', 0.3), plwd = 2,
-           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
-
-q20_cluster_2 <- rbind(rep(max(q20_cluster_2),5), rep(0,5), q20_cluster_2)
-radarchart(q20_cluster_2, title = "Cluster 2",
-           pcol = '#01B6BD', pfcol = alpha('#80DADE', 0.3), plwd = 2,
-           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
-
-q20_cluster_3 <- rbind(rep(max(q20_cluster_3),5), rep(0,5), q20_cluster_3)
-radarchart(q20_cluster_3, title = "Cluster 3",
-           pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
-           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
-```
-
-
-* Q21: Approximately how many individuals are responsible for data science workloads at your place at business?
-
-```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=5, fig.width=15, out.retina=1}
-q21 <- survey %>% dplyr::select(Q21)
-
-q21_cluster <- cbind(q21, cluster)
-
-q21_cluster <- q21_cluster %>%
-  group_by(cluster, Q21) %>%
-  summarize(count = n())
-
-# Remove rows with empty string
-q21_cluster <- q21_cluster[!apply(q21_cluster, 1, function(x) any(x == "")),] 
-
-# Turn data into wide format
-q21_cluster <- q21_cluster %>% pivot_wider(id_cols = cluster, names_from = Q21, values_from = count)
-q21_cluster <- q21_cluster[, -1]
-
-# Filter each cluster
-q21_cluster_1 <- q21_cluster[1,]
-q21_cluster_2 <- q21_cluster[2,]
-q21_cluster_3 <- q21_cluster[3,]
-
-# Plot radar chart
-layout(matrix(c(1, 2, 3), nrow = 1, byrow = TRUE))
-
-q21_cluster_1 <- rbind(rep(max(q21_cluster_1),7), rep(0,7), q21_cluster_1)
-radarchart(q21_cluster_1, title = "Cluster 1", 
-           pcol = '#FCC02A', pfcol = alpha('#FDDF94', 0.3), plwd = 2,
-           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
-
-q21_cluster_2 <- rbind(rep(max(q21_cluster_2),7), rep(0,7), q21_cluster_2)
-radarchart(q21_cluster_2, title = "Cluster 2",
-           pcol = '#01B6BD', pfcol = alpha('#80DADE', 0.3), plwd = 2,
-           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
-
-q21_cluster_3 <- rbind(rep(max(q21_cluster_3),7), rep(0,7), q21_cluster_3)
-radarchart(q21_cluster_3, title = "Cluster 3",
-           pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
-           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
-```
-
-
-* Q22: Does your current employer incorporate machine learning methods into their business?
-
-```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=5, fig.width=15, out.retina=1}
-q22 <- survey %>% dplyr::select(Q22)
-
-q22_cluster <- cbind(q22, cluster)
-
-q22_cluster <- q22_cluster %>%
-  group_by(cluster, Q22) %>%
-  summarize(count = n())
-
-# Remove rows with empty string
-q22_cluster <- q22_cluster[!apply(q22_cluster, 1, function(x) any(x == "")),] 
-
-# Turn data into wide format
-q22_cluster <- q22_cluster %>% pivot_wider(id_cols = cluster, names_from = Q22, values_from = count)
-q22_cluster <- q22_cluster[, -1]
-
-# Filter each cluster
-q22_cluster_1 <- q22_cluster[1,]
-q22_cluster_2 <- q22_cluster[2,]
-q22_cluster_3 <- q22_cluster[3,]
-
-# Plot radar chart
-layout(matrix(c(1, 2, 3), nrow = 1, byrow = TRUE))
-
-q22_cluster_1 <- rbind(rep(max(q22_cluster_1),6), rep(0,6), q22_cluster_1)
-radarchart(q22_cluster_1, title = "Cluster 1", 
-           pcol = '#FCC02A', pfcol = alpha('#FDDF94', 0.3), plwd = 2,
-           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
-
-q22_cluster_2 <- rbind(rep(max(q22_cluster_2),6), rep(0,6), q22_cluster_2)
-radarchart(q22_cluster_2, title = "Cluster 2",
-           pcol = '#01B6BD', pfcol = alpha('#80DADE', 0.3), plwd = 2,
-           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
-
-q22_cluster_3 <- rbind(rep(max(q22_cluster_3),6), rep(0,6), q22_cluster_3)
-radarchart(q22_cluster_3, title = "Cluster 3",
-           pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
-           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
-```
-
-
-* Q23: Select any activities that make up an important part of your role at work
-
-```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=5, fig.width=15, out.retina=1}
-q23 <- survey %>%
-  dplyr::select(Q23_Part_1, Q23_Part_2, Q23_Part_3, Q23_Part_4, Q23_Part_5, Q23_Part_6, Q23_Part_7, Q23_OTHER)
-
-q23_cluster <- cbind(q23, cluster)
-
-q23_cluster <- q23_cluster %>%
+q37_cluster <- q37_cluster %>%
   group_by(cluster) %>%
-  summarize(`Analyze and understand data to influence product or business decisions` = sum(Q23_Part_1 != ""),
-            `Build and/or run the data infrastructure that my business uses for storing, analyzing, and operationalizing data` = sum(Q23_Part_2 != ""),
-            `Build prototypes to explore applying machine learning to new areas` = sum(Q23_Part_3 != ""),
-            `Build and/or run a machine learning service that operationally improves my product or workflows` = sum(Q23_Part_4 != ""),
-            `Experimentation and iteration to improve existing ML models` = sum(Q23_Part_5 != ""),
-            `Do research that advances the state of the art of machine learning` = sum(Q23_Part_6 != ""),
-            `None of these activities are an important part of my role at work` = sum(Q23_Part_7 != ""),
-            `Other` = sum(Q23_OTHER != ""))
+  summarize(`Coursera` = sum(Q37_Part_1 != ""),
+            `edX` = sum(Q37_Part_2 != ""),
+            `Kaggle Learn Courses` = sum(Q37_Part_3 != ""),
+            `DataCamp` = sum(Q37_Part_4 != ""),
+            `Fast.ai` = sum(Q37_Part_5 != ""),
+            `Udacity` = sum(Q37_Part_6 != ""),
+            `Udemy` = sum(Q37_Part_7 != ""),
+            `LinkedIn Learning` = sum(Q37_Part_8 != ""),
+            `Cloud-certification programs`= sum(Q37_Part_9 != ""),
+            `University Courses` = sum(Q37_Part_10 != ""),
+            `None` = sum(Q37_Part_11 != ""),
+            `Other` = sum(Q37_OTHER != ""))
 
-rownames(q23_cluster) <- q23_cluster$cluster
-q23_cluster <- q23_cluster[, -c(1, 1)]
+rownames(q37_cluster) <- q37_cluster$cluster
+q37_cluster <- q37_cluster[, -1]
 
 # Filter each cluster
-q23_cluster_1 <- q23_cluster[1,]
-q23_cluster_2 <- q23_cluster[2,]
-q23_cluster_3 <- q23_cluster[3,]
+q37_cluster_1 <- q37_cluster[1,]
+q37_cluster_2 <- q37_cluster[2,]
+q37_cluster_3 <- q37_cluster[3,]
 
 # Plot radar chart
 layout(matrix(c(1, 2, 3), nrow = 1, byrow = TRUE))
 
-q23_cluster_1 <- rbind(rep(max(q23_cluster_1),8), rep(0,8), q23_cluster_1)
-radarchart(q23_cluster_1, title = "Cluster 1", 
+q37_cluster_1 <- rbind(rep(max(q37_cluster_1),12), rep(0,12), q37_cluster_1)
+radarchart(q37_cluster_1, title = "Cluster 1", 
            pcol = '#FCC02A', pfcol = alpha('#FDDF94', 0.3), plwd = 2,
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 
-q23_cluster_2 <- rbind(rep(max(q23_cluster_2),8), rep(0,8), q23_cluster_2)
-radarchart(q23_cluster_2, title = "Cluster 2",
+q37_cluster_2 <- rbind(rep(max(q37_cluster_2),12), rep(0,12), q37_cluster_2)
+radarchart(q37_cluster_2, title = "Cluster 2",
            pcol = '#01B6BD', pfcol = alpha('#80DADE', 0.3), plwd = 2,
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 
-q23_cluster_3 <- rbind(rep(max(q23_cluster_3),8), rep(0,8), q23_cluster_3)
-radarchart(q23_cluster_3, title = "Cluster 3",
+q37_cluster_3 <- rbind(rep(max(q37_cluster_3),12), rep(0,12), q37_cluster_3)
+radarchart(q37_cluster_3, title = "Cluster 3",
            pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
 
-* Q24: What is your current yearly compensation (approximate $USD)?
+* Q38: What is the primary tool that you use at work or school to analyze data?
 
 ```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=5, fig.width=15, out.retina=1}
-q24 <- survey %>% 
-  mutate(Q24_Level = ifelse(Q24 %in% c(""), "", ifelse(Q24 %in% c("$0-999", "1,000-1,999", "2,000-2,999", "3,000-3,999", "4,000-4,999", "5,000-7,499", "7,500-9,999", "10,000-14,999", "15,000-19,999", "20,000-24,999", "25,000-29,999", "30,000-39,999", "40,000-49,999"), "Level 1 ($0-49,999)", ifelse(Q24 %in% c("50,000-59,999", "60,000-69,999", "70,000-79,999", "80,000-89,999", "90,000-99,999"), "Level 2 ($50,000-99,999)", ifelse(Q24 %in% c("100,000-124,999", "125,000-149,999"), "Level 3 ($100,000-149,999)", ifelse(Q24 %in% c("150,000-199,999"), "Level 4 ($150,000-199,999)", ifelse(Q24 %in% c("200,000-249,999", "250,000-299,999"), "Level 5 ($200,000-299,999)", ifelse(Q24 %in% c("300,000-500,000"), "Level 6 ($300,000-500,000)", "Level  7 (> $500,000)")))))))) %>%
-  dplyr::select(Q24, Q24_Level)
+q38 <- survey %>% dplyr::select(Q38)
 
-q24_cluster <- cbind(q24, cluster)
+q38_cluster <- cbind(q38, cluster)
 
-q24_cluster <- q24_cluster %>%
-  group_by(cluster, Q24_Level) %>%
+q38_cluster <- q38_cluster %>%
+  group_by(cluster, Q38) %>%
   summarize(count = n())
 
 # Remove rows with empty string
-q24_cluster <- q24_cluster[!apply(q24_cluster, 1, function(x) any(x == "")),] 
+q38_cluster <- q38_cluster[!apply(q38_cluster, 1, function(x) any(x == "")),] 
 
 # Turn data into wide format
-q24_cluster <- q24_cluster %>% pivot_wider(id_cols = cluster, names_from = Q24_Level, values_from = count)
-q24_cluster <- q24_cluster[, -1]
+q38_cluster <- q38_cluster %>% pivot_wider(id_cols = cluster, names_from = Q38, values_from = count)
+q38_cluster <- q38_cluster[, -1]
+q38_cluster[is.na(q38_cluster)] <- 0
 
 # Filter each cluster
-q24_cluster_1 <- q24_cluster[1,]
-q24_cluster_2 <- q24_cluster[2,]
-q24_cluster_3 <- q24_cluster[3,]
+q38_cluster_1 <- q38_cluster[1,]
+q38_cluster_2 <- q38_cluster[2,]
+q38_cluster_3 <- q38_cluster[3,]
 
 # Plot radar chart
 layout(matrix(c(1, 2, 3), nrow = 1, byrow = TRUE))
 
-q24_cluster_1 <- rbind(rep(max(q24_cluster_1),7), rep(0,7), q24_cluster_1)
-radarchart(q24_cluster_1, title = "Cluster 1", 
+q38_cluster_1 <- rbind(rep(max(q38_cluster_1),13), rep(0,13), q38_cluster_1)
+radarchart(q38_cluster_1, title = "Cluster 1", 
            pcol = '#FCC02A', pfcol = alpha('#FDDF94', 0.3), plwd = 2,
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 
-q24_cluster_2 <- rbind(rep(max(q24_cluster_2),7), rep(0,7), q24_cluster_2)
-radarchart(q24_cluster_2, title = "Cluster 2",
+q38_cluster_2 <- rbind(rep(max(q38_cluster_2),13), rep(0,13), q38_cluster_2)
+radarchart(q38_cluster_2, title = "Cluster 2",
            pcol = '#01B6BD', pfcol = alpha('#80DADE', 0.3), plwd = 2,
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 
-q24_cluster_3 <- rbind(rep(max(q24_cluster_3),7), rep(0,7), q24_cluster_3)
-radarchart(q24_cluster_3, title = "Cluster 3",
+q38_cluster_3 <- rbind(rep(max(q38_cluster_3),13), rep(0,13), q38_cluster_3)
+radarchart(q38_cluster_3, title = "Cluster 3",
            pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
+
+* Q39: Who/what are your favorite media sources that report on data science topics?
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=5, fig.width=15, out.retina=1}
+q39 <- survey %>%
+  dplyr::select(Q39_Part_1, Q39_Part_2, Q39_Part_3, Q39_Part_4, Q39_Part_5, Q39_Part_6, Q39_Part_7, Q39_Part_8, Q39_Part_9, Q39_Part_10, Q39_Part_11, Q39_OTHER)
+
+q39_cluster <- cbind(q39, cluster)
+
+q39_cluster <- q39_cluster %>%
+  group_by(cluster) %>%
+  summarize(`Twitter` = sum(Q39_Part_1 != ""),
+            `Email newsletters` = sum(Q39_Part_2 != ""),
+            `Reddit` = sum(Q39_Part_3 != ""),
+            `Kaggle` = sum(Q39_Part_4 != ""),
+            `Course Forum` = sum(Q39_Part_5 != ""),
+            `YouTube` = sum(Q39_Part_6 != ""),
+            `Podcasts` = sum(Q39_Part_7 != ""),
+            `Blogs` = sum(Q39_Part_8 != ""),
+            `Journal Publications` = sum(Q39_Part_9 != ""),
+            `Slack Communities` = sum(Q39_Part_10 != ""),
+            `None` = sum(Q39_Part_11 != ""),
+            `Other` = sum(Q39_OTHER != ""))
+
+rownames(q39_cluster) <- q39_cluster$cluster
+q39_cluster <- q39_cluster[, -1]
+
+# Filter each cluster
+q39_cluster_1 <- q39_cluster[1,]
+q39_cluster_2 <- q39_cluster[2,]
+q39_cluster_3 <- q39_cluster[3,]
+
+# Plot radar chart
+layout(matrix(c(1, 2, 3), nrow = 1, byrow = TRUE))
+
+q39_cluster_1 <- rbind(rep(max(q39_cluster_1),12), rep(0,12), q39_cluster_1)
+radarchart(q39_cluster_1, title = "Cluster 1", 
+           pcol = '#FCC02A', pfcol = alpha('#FDDF94', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
+
+q39_cluster_2 <- rbind(rep(max(q39_cluster_2),12), rep(0,12), q39_cluster_2)
+radarchart(q39_cluster_2, title = "Cluster 2",
+           pcol = '#01B6BD', pfcol = alpha('#80DADE', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
+
+q39_cluster_3 <- rbind(rep(max(q39_cluster_3),12), rep(0,12), q39_cluster_3)
+radarchart(q39_cluster_3, title = "Cluster 3",
+           pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
+```
 
 
 ## Insights about technical skills
@@ -901,152 +782,271 @@ radarchart(q36_cluster_3, title = "Cluster 3",
 ```
 
 
-## Insights about learning process
+## Insights about jobs, salaries, companies
 
-* Q37: On which platforms have you begun or completed data science courses?
-
-```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=5, fig.width=15, out.retina=1}
-q37 <- survey %>%
-  dplyr::select(Q37_Part_1, Q37_Part_2, Q37_Part_3, Q37_Part_4, Q37_Part_5, Q37_Part_6, Q37_Part_7, Q37_Part_8, Q37_Part_9, Q37_Part_10, Q37_Part_11, Q37_OTHER)
-
-q37_cluster <- cbind(q37, cluster)
-
-q37_cluster <- q37_cluster %>%
-  group_by(cluster) %>%
-  summarize(`Coursera` = sum(Q37_Part_1 != ""),
-            `edX` = sum(Q37_Part_2 != ""),
-            `Kaggle Learn Courses` = sum(Q37_Part_3 != ""),
-            `DataCamp` = sum(Q37_Part_4 != ""),
-            `Fast.ai` = sum(Q37_Part_5 != ""),
-            `Udacity` = sum(Q37_Part_6 != ""),
-            `Udemy` = sum(Q37_Part_7 != ""),
-            `LinkedIn Learning` = sum(Q37_Part_8 != ""),
-            `Cloud-certification programs`= sum(Q37_Part_9 != ""),
-            `University Courses` = sum(Q37_Part_10 != ""),
-            `None` = sum(Q37_Part_11 != ""),
-            `Other` = sum(Q37_OTHER != ""))
-
-rownames(q37_cluster) <- q37_cluster$cluster
-q37_cluster <- q37_cluster[, -1]
-
-# Filter each cluster
-q37_cluster_1 <- q37_cluster[1,]
-q37_cluster_2 <- q37_cluster[2,]
-q37_cluster_3 <- q37_cluster[3,]
-
-# Plot radar chart
-layout(matrix(c(1, 2, 3), nrow = 1, byrow = TRUE))
-
-q37_cluster_1 <- rbind(rep(max(q37_cluster_1),12), rep(0,12), q37_cluster_1)
-radarchart(q37_cluster_1, title = "Cluster 1", 
-           pcol = '#FCC02A', pfcol = alpha('#FDDF94', 0.3), plwd = 2,
-           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
-
-q37_cluster_2 <- rbind(rep(max(q37_cluster_2),12), rep(0,12), q37_cluster_2)
-radarchart(q37_cluster_2, title = "Cluster 2",
-           pcol = '#01B6BD', pfcol = alpha('#80DADE', 0.3), plwd = 2,
-           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
-
-q37_cluster_3 <- rbind(rep(max(q37_cluster_3),12), rep(0,12), q37_cluster_3)
-radarchart(q37_cluster_3, title = "Cluster 3",
-           pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
-           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
-```
-
-
-* Q38: What is the primary tool that you use at work or school to analyze data?
+* Q5: Select the title most similar to your current role (or most recent title if retired)
 
 ```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=5, fig.width=15, out.retina=1}
-q38 <- survey %>% dplyr::select(Q38)
+q5 <- survey %>% dplyr::select(Q5)
 
-q38_cluster <- cbind(q38, cluster)
+q5_cluster <- cbind(q5, cluster)
 
-q38_cluster <- q38_cluster %>%
-  group_by(cluster, Q38) %>%
+q5_cluster <- q5_cluster %>%
+  group_by(cluster, Q5) %>%
   summarize(count = n())
 
 # Remove rows with empty string
-q38_cluster <- q38_cluster[!apply(q38_cluster, 1, function(x) any(x == "")),] 
+q5_cluster <- q5_cluster[!apply(q5_cluster, 1, function(x) any(x == "")),] 
 
 # Turn data into wide format
-q38_cluster <- q38_cluster %>% pivot_wider(id_cols = cluster, names_from = Q38, values_from = count)
-q38_cluster <- q38_cluster[, -1]
-q38_cluster[is.na(q38_cluster)] <- 0
+q5_cluster <- q5_cluster %>% pivot_wider(id_cols = cluster, names_from = Q5, values_from = count)
+q5_cluster <- q5_cluster[, -1]
 
 # Filter each cluster
-q38_cluster_1 <- q38_cluster[1,]
-q38_cluster_2 <- q38_cluster[2,]
-q38_cluster_3 <- q38_cluster[3,]
+q5_cluster_1 <- q5_cluster[1,]
+q5_cluster_2 <- q5_cluster[2,]
+q5_cluster_3 <- q5_cluster[3,]
 
 # Plot radar chart
 layout(matrix(c(1, 2, 3), nrow = 1, byrow = TRUE))
 
-q38_cluster_1 <- rbind(rep(max(q38_cluster_1),13), rep(0,13), q38_cluster_1)
-radarchart(q38_cluster_1, title = "Cluster 1", 
+q5_cluster_1 <- rbind(rep(max(q5_cluster_1),13), rep(0,13), q5_cluster_1)
+radarchart(q5_cluster_1, title = "Cluster 1", 
            pcol = '#FCC02A', pfcol = alpha('#FDDF94', 0.3), plwd = 2,
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 
-q38_cluster_2 <- rbind(rep(max(q38_cluster_2),13), rep(0,13), q38_cluster_2)
-radarchart(q38_cluster_2, title = "Cluster 2",
+q5_cluster_2 <- rbind(rep(max(q5_cluster_2),13), rep(0,13), q5_cluster_2)
+radarchart(q5_cluster_2, title = "Cluster 2",
            pcol = '#01B6BD', pfcol = alpha('#80DADE', 0.3), plwd = 2,
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 
-q38_cluster_3 <- rbind(rep(max(q38_cluster_3),13), rep(0,13), q38_cluster_3)
-radarchart(q38_cluster_3, title = "Cluster 3",
+q5_cluster_3 <- rbind(rep(max(q5_cluster_3),13), rep(0,13), q5_cluster_3)
+radarchart(q5_cluster_3, title = "Cluster 3",
            pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
 
-* Q39: Who/what are your favorite media sources that report on data science topics?
+* Q20: What is the size of the company where you are employed?
 
 ```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=5, fig.width=15, out.retina=1}
-q39 <- survey %>%
-  dplyr::select(Q39_Part_1, Q39_Part_2, Q39_Part_3, Q39_Part_4, Q39_Part_5, Q39_Part_6, Q39_Part_7, Q39_Part_8, Q39_Part_9, Q39_Part_10, Q39_Part_11, Q39_OTHER)
+q20 <- survey %>% dplyr::select(Q20)
 
-q39_cluster <- cbind(q39, cluster)
+q20_cluster <- cbind(q20, cluster)
 
-q39_cluster <- q39_cluster %>%
-  group_by(cluster) %>%
-  summarize(`Twitter` = sum(Q39_Part_1 != ""),
-            `Email newsletters` = sum(Q39_Part_2 != ""),
-            `Reddit` = sum(Q39_Part_3 != ""),
-            `Kaggle` = sum(Q39_Part_4 != ""),
-            `Course Forum` = sum(Q39_Part_5 != ""),
-            `YouTube` = sum(Q39_Part_6 != ""),
-            `Podcasts` = sum(Q39_Part_7 != ""),
-            `Blogs` = sum(Q39_Part_8 != ""),
-            `Journal Publications` = sum(Q39_Part_9 != ""),
-            `Slack Communities` = sum(Q39_Part_10 != ""),
-            `None` = sum(Q39_Part_11 != ""),
-            `Other` = sum(Q39_OTHER != ""))
+q20_cluster <- q20_cluster %>%
+  group_by(cluster, Q20) %>%
+  summarize(count = n())
 
-rownames(q39_cluster) <- q39_cluster$cluster
-q39_cluster <- q39_cluster[, -1]
+# Remove rows with empty string
+q20_cluster <- q20_cluster[!apply(q20_cluster, 1, function(x) any(x == "")),] 
+
+# Turn data into wide format
+q20_cluster <- q20_cluster %>% pivot_wider(id_cols = cluster, names_from = Q20, values_from = count)
+q20_cluster <- q20_cluster[, -1]
 
 # Filter each cluster
-q39_cluster_1 <- q39_cluster[1,]
-q39_cluster_2 <- q39_cluster[2,]
-q39_cluster_3 <- q39_cluster[3,]
+q20_cluster_1 <- q20_cluster[1,]
+q20_cluster_2 <- q20_cluster[2,]
+q20_cluster_3 <- q20_cluster[3,]
 
 # Plot radar chart
 layout(matrix(c(1, 2, 3), nrow = 1, byrow = TRUE))
 
-q39_cluster_1 <- rbind(rep(max(q39_cluster_1),12), rep(0,12), q39_cluster_1)
-radarchart(q39_cluster_1, title = "Cluster 1", 
+q20_cluster_1 <- rbind(rep(max(q20_cluster_1),5), rep(0,5), q20_cluster_1)
+radarchart(q20_cluster_1, title = "Cluster 1", 
            pcol = '#FCC02A', pfcol = alpha('#FDDF94', 0.3), plwd = 2,
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 
-q39_cluster_2 <- rbind(rep(max(q39_cluster_2),12), rep(0,12), q39_cluster_2)
-radarchart(q39_cluster_2, title = "Cluster 2",
+q20_cluster_2 <- rbind(rep(max(q20_cluster_2),5), rep(0,5), q20_cluster_2)
+radarchart(q20_cluster_2, title = "Cluster 2",
            pcol = '#01B6BD', pfcol = alpha('#80DADE', 0.3), plwd = 2,
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 
-q39_cluster_3 <- rbind(rep(max(q39_cluster_3),12), rep(0,12), q39_cluster_3)
-radarchart(q39_cluster_3, title = "Cluster 3",
+q20_cluster_3 <- rbind(rep(max(q20_cluster_3),5), rep(0,5), q20_cluster_3)
+radarchart(q20_cluster_3, title = "Cluster 3",
            pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
+
+
+* Q21: Approximately how many individuals are responsible for data science workloads at your place at business?
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=5, fig.width=15, out.retina=1}
+q21 <- survey %>% dplyr::select(Q21)
+
+q21_cluster <- cbind(q21, cluster)
+
+q21_cluster <- q21_cluster %>%
+  group_by(cluster, Q21) %>%
+  summarize(count = n())
+
+# Remove rows with empty string
+q21_cluster <- q21_cluster[!apply(q21_cluster, 1, function(x) any(x == "")),] 
+
+# Turn data into wide format
+q21_cluster <- q21_cluster %>% pivot_wider(id_cols = cluster, names_from = Q21, values_from = count)
+q21_cluster <- q21_cluster[, -1]
+
+# Filter each cluster
+q21_cluster_1 <- q21_cluster[1,]
+q21_cluster_2 <- q21_cluster[2,]
+q21_cluster_3 <- q21_cluster[3,]
+
+# Plot radar chart
+layout(matrix(c(1, 2, 3), nrow = 1, byrow = TRUE))
+
+q21_cluster_1 <- rbind(rep(max(q21_cluster_1),7), rep(0,7), q21_cluster_1)
+radarchart(q21_cluster_1, title = "Cluster 1", 
+           pcol = '#FCC02A', pfcol = alpha('#FDDF94', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
+
+q21_cluster_2 <- rbind(rep(max(q21_cluster_2),7), rep(0,7), q21_cluster_2)
+radarchart(q21_cluster_2, title = "Cluster 2",
+           pcol = '#01B6BD', pfcol = alpha('#80DADE', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
+
+q21_cluster_3 <- rbind(rep(max(q21_cluster_3),7), rep(0,7), q21_cluster_3)
+radarchart(q21_cluster_3, title = "Cluster 3",
+           pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
+```
+
+
+* Q22: Does your current employer incorporate machine learning methods into their business?
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=5, fig.width=15, out.retina=1}
+q22 <- survey %>% dplyr::select(Q22)
+
+q22_cluster <- cbind(q22, cluster)
+
+q22_cluster <- q22_cluster %>%
+  group_by(cluster, Q22) %>%
+  summarize(count = n())
+
+# Remove rows with empty string
+q22_cluster <- q22_cluster[!apply(q22_cluster, 1, function(x) any(x == "")),] 
+
+# Turn data into wide format
+q22_cluster <- q22_cluster %>% pivot_wider(id_cols = cluster, names_from = Q22, values_from = count)
+q22_cluster <- q22_cluster[, -1]
+
+# Filter each cluster
+q22_cluster_1 <- q22_cluster[1,]
+q22_cluster_2 <- q22_cluster[2,]
+q22_cluster_3 <- q22_cluster[3,]
+
+# Plot radar chart
+layout(matrix(c(1, 2, 3), nrow = 1, byrow = TRUE))
+
+q22_cluster_1 <- rbind(rep(max(q22_cluster_1),6), rep(0,6), q22_cluster_1)
+radarchart(q22_cluster_1, title = "Cluster 1", 
+           pcol = '#FCC02A', pfcol = alpha('#FDDF94', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
+
+q22_cluster_2 <- rbind(rep(max(q22_cluster_2),6), rep(0,6), q22_cluster_2)
+radarchart(q22_cluster_2, title = "Cluster 2",
+           pcol = '#01B6BD', pfcol = alpha('#80DADE', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
+
+q22_cluster_3 <- rbind(rep(max(q22_cluster_3),6), rep(0,6), q22_cluster_3)
+radarchart(q22_cluster_3, title = "Cluster 3",
+           pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
+```
+
+
+* Q23: Select any activities that make up an important part of your role at work
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=5, fig.width=15, out.retina=1}
+q23 <- survey %>%
+  dplyr::select(Q23_Part_1, Q23_Part_2, Q23_Part_3, Q23_Part_4, Q23_Part_5, Q23_Part_6, Q23_Part_7, Q23_OTHER)
+
+q23_cluster <- cbind(q23, cluster)
+
+q23_cluster <- q23_cluster %>%
+  group_by(cluster) %>%
+  summarize(`Analyze and understand data to influence product or business decisions` = sum(Q23_Part_1 != ""),
+            `Build and/or run the data infrastructure that my business uses for storing, analyzing, and operationalizing data` = sum(Q23_Part_2 != ""),
+            `Build prototypes to explore applying machine learning to new areas` = sum(Q23_Part_3 != ""),
+            `Build and/or run a machine learning service that operationally improves my product or workflows` = sum(Q23_Part_4 != ""),
+            `Experimentation and iteration to improve existing ML models` = sum(Q23_Part_5 != ""),
+            `Do research that advances the state of the art of machine learning` = sum(Q23_Part_6 != ""),
+            `None of these activities are an important part of my role at work` = sum(Q23_Part_7 != ""),
+            `Other` = sum(Q23_OTHER != ""))
+
+rownames(q23_cluster) <- q23_cluster$cluster
+q23_cluster <- q23_cluster[, -c(1, 1)]
+
+# Filter each cluster
+q23_cluster_1 <- q23_cluster[1,]
+q23_cluster_2 <- q23_cluster[2,]
+q23_cluster_3 <- q23_cluster[3,]
+
+# Plot radar chart
+layout(matrix(c(1, 2, 3), nrow = 1, byrow = TRUE))
+
+q23_cluster_1 <- rbind(rep(max(q23_cluster_1),8), rep(0,8), q23_cluster_1)
+radarchart(q23_cluster_1, title = "Cluster 1", 
+           pcol = '#FCC02A', pfcol = alpha('#FDDF94', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
+
+q23_cluster_2 <- rbind(rep(max(q23_cluster_2),8), rep(0,8), q23_cluster_2)
+radarchart(q23_cluster_2, title = "Cluster 2",
+           pcol = '#01B6BD', pfcol = alpha('#80DADE', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
+
+q23_cluster_3 <- rbind(rep(max(q23_cluster_3),8), rep(0,8), q23_cluster_3)
+radarchart(q23_cluster_3, title = "Cluster 3",
+           pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
+```
+
+
+* Q24: What is your current yearly compensation (approximate $USD)?
+
+```{r, warning=FALSE, message=FALSE, echo=FALSE, fig.height=5, fig.width=15, out.retina=1}
+q24 <- survey %>% 
+  mutate(Q24_Level = ifelse(Q24 %in% c(""), "", ifelse(Q24 %in% c("$0-999", "1,000-1,999", "2,000-2,999", "3,000-3,999", "4,000-4,999", "5,000-7,499", "7,500-9,999", "10,000-14,999", "15,000-19,999", "20,000-24,999", "25,000-29,999", "30,000-39,999", "40,000-49,999"), "Level 1 ($0-49,999)", ifelse(Q24 %in% c("50,000-59,999", "60,000-69,999", "70,000-79,999", "80,000-89,999", "90,000-99,999"), "Level 2 ($50,000-99,999)", ifelse(Q24 %in% c("100,000-124,999", "125,000-149,999"), "Level 3 ($100,000-149,999)", ifelse(Q24 %in% c("150,000-199,999"), "Level 4 ($150,000-199,999)", ifelse(Q24 %in% c("200,000-249,999", "250,000-299,999"), "Level 5 ($200,000-299,999)", ifelse(Q24 %in% c("300,000-500,000"), "Level 6 ($300,000-500,000)", "Level  7 (> $500,000)")))))))) %>%
+  dplyr::select(Q24, Q24_Level)
+
+q24_cluster <- cbind(q24, cluster)
+
+q24_cluster <- q24_cluster %>%
+  group_by(cluster, Q24_Level) %>%
+  summarize(count = n())
+
+# Remove rows with empty string
+q24_cluster <- q24_cluster[!apply(q24_cluster, 1, function(x) any(x == "")),] 
+
+# Turn data into wide format
+q24_cluster <- q24_cluster %>% pivot_wider(id_cols = cluster, names_from = Q24_Level, values_from = count)
+q24_cluster <- q24_cluster[, -1]
+
+# Filter each cluster
+q24_cluster_1 <- q24_cluster[1,]
+q24_cluster_2 <- q24_cluster[2,]
+q24_cluster_3 <- q24_cluster[3,]
+
+# Plot radar chart
+layout(matrix(c(1, 2, 3), nrow = 1, byrow = TRUE))
+
+q24_cluster_1 <- rbind(rep(max(q24_cluster_1),7), rep(0,7), q24_cluster_1)
+radarchart(q24_cluster_1, title = "Cluster 1", 
+           pcol = '#FCC02A', pfcol = alpha('#FDDF94', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
+
+q24_cluster_2 <- rbind(rep(max(q24_cluster_2),7), rep(0,7), q24_cluster_2)
+radarchart(q24_cluster_2, title = "Cluster 2",
+           pcol = '#01B6BD', pfcol = alpha('#80DADE', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
+
+q24_cluster_3 <- rbind(rep(max(q24_cluster_3),7), rep(0,7), q24_cluster_3)
+radarchart(q24_cluster_3, title = "Cluster 3",
+           pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
+           cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
+```
+
 
 
 # Conclusion
