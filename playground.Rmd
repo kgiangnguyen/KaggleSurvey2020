@@ -34,12 +34,18 @@ for (i in 1:(dim(survey)[2]) ) {
 }
 ```
 
-# Introduction
+Welcome to the Wonderland of Data Science!
+
+Our analysis uses data from 20,036 responses in the Kaggle’s 2020 survey. Although the survey is limited to the Kaggle community, we believe the insights about these Kagglers will not only apply to our community, but also generalize to a larger data science community in which we better understand the roadmap that people are taking, the tools that people are developing, and the language that people are using to communicate about data science nowadays. We decide to tell our story by means of radar chart as we want to focus on the behavioral tendencies of the respondents and compare the trends between different detected groups of data scientists within the Kaggle community.
+
+Just like Alice going on an adventure to the Wonderland, no matter where you are on the data science path, you will definitely "grow up" and survive in this confusing yet very exciting world. We hope our analysis will serve as a guide for you to master the arts of data science and help you stay up to date with the latest trends in the field. Now, let's get started!
 
 
 # Clustering analysis
 
-Targeted for students or data beginners
+In this analysis, we aim to detect different groups of data scientists within the Kaggle community using clustering technique. Questions 1, 2, 3, 4, 6, and 15 are selected as input features for clustering since demographics, education, and years of experience are all fixed properties representative of an indivdual. Given the clusters, individuals excluded from the survey will be able to identify the group most relevant to them based on their background information and gain useful insights regarding career tracks, technical skills, and learning resources through our analysis.
+
+The input questions are as below:
 
 * Q1: What is your age (#years)?
 * Q2: What is your gender?
@@ -158,7 +164,7 @@ fviz_mca_var(mca, choice = "mca.cor",
             ggtheme = theme_minimal())
 ```
 
-Our goal is to better understand the specific communities represented in the survey. Thus, we propose using K-means clustering, one of the simplest and most popular unsupervised technique that aims to group similar data points together and discover underlying patterns. To process the learning data and detect clusters, K-means identifies *k* number of centroids, and then allocates every data point to the nearest cluster, while keeping the centroids as small as possible. After examining different possible values of *k*, we decide to pick *k = 3*. This will help the model to avoid overfitting while ensuring its descriptive performance. Contextually, we believe 3 is a suitable number of groups of similar respondents that will allow us to dive deep into the survey dataset and tell the diverse stories of data scientists from around the world.
+Our goal is to better understand the specific communities represented in the survey. Thus, we propose using K-means clustering, one of the simplest and most popular clustering that aims to group similar data points together and discover underlying patterns. To process the learning data and detect clusters, K-means identifies *k* number of centroids, and then allocates every data point to the nearest cluster, while keeping the centroids as small as possible. After examining different possible values of *k*, we decide to pick *k = 3*. This will help the model to avoid overfitting while ensuring its descriptive performance. Contextually, we believe 3 is a suitable number of groups of similar respondents that will allow us to dive deep into the survey dataset and tell the diverse stories of data scientists from around the world.
 
 ```{r, include=FALSE}
 set.seed(2020)
@@ -189,10 +195,11 @@ get_mode <- function(v) {
 clust_dist <- input_cluster %>%
   group_by(cluster) %>%
   summarize(Count = n()) %>%
-  rename(Cluster = cluster)
+  mutate(Group = c("Experts", "Junior Players", "Amateur Outsiders")) %>%
+  dplyr::select(Group, Count)
 
 clust_dist %>%
-  kbl(align = "c") %>%
+  kable(align = "c") %>%
   kable_styling("hover", full_width = F)
 ```
 
@@ -206,15 +213,47 @@ clust_info <- input_cluster %>%
             Degree = get_mode(Q4),
             `Years of Coding` = get_mode(Q6),
             `Years of Machine Learning` = get_mode(Q15)) %>%
-  mutate(Degree = ifelse(Degree == "Masterâ€™s degree", "Master's degree", ifelse(Degree == "Bachelorâ€™s degree", "Bachelor's degree", Degree))) %>%
-  rename(Cluster = cluster)
+  mutate(Degree2 = ifelse(Degree == "Masterâ€™s degree", "Master's degree", ifelse(Degree == "Bachelorâ€™s degree", "Bachelor's degree", Degree))) %>%
+  mutate(Group = c("Experts", "Junior Players", "Amateur Outsiders")) %>%
+  dplyr::select(Group, Age, Continent, Degree, `Years of Coding`, `Years of Machine Learning`)
 
 clust_info %>%
-  kbl(align = "c") %>%
+  kable(align = "c") %>%
   kable_styling("hover", full_width = F)
 ```
 
-Text goes here
+Overall, there are three representatives in the Kaggle community:
+
+* Amateur Outsiders
+
+<center>
+
+![Alice and the Rabbit Hole](alice_rabbit_hole.png)
+
+</center>
+
+The first group consists of individuals in the age of 25-29, mostly with a Bachelor's degree but neither coding nor machine learning experience. They seem to be the amateur outsiders with some interest in data science and would like to know more or enter the field. This group is the smallest of the three groups, accounting for roughly 10% of the sample.
+
+
+* Junior Players
+
+<center>
+
+![Alice at the Mad Tea Party](alice_mad_tea.png)
+
+</center>
+
+The second group consists of individuals in the age of 22- 24, mostly with a Bachelor's degree and some years of coding but not much machine learning experience. They seem to be fresh graduates or beginners in the data science world who already know what’s in there and are on the way of discovering more about the path. This group is the largest among the three groups, accounting for roughly 60% of the sample.
+
+* Experts
+
+<center>
+
+![Alice Waking Up at the Riverbank](alice_riverbank.png)
+
+</center>
+
+The third group consists of individuals in the age of 30 – 35, mostly with a Master's degree and many years of both coding and machine learning experience. We can call them the experts of the game as they seem to be much more proficient in data science more than anyone else. This group is the second largest among the three groups, accounting for roughly 30% of the sample.
 
 
 # Output
