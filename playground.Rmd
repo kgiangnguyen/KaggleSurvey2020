@@ -425,7 +425,7 @@ radarchart(q22_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
-The experts mostly work at places where machine learning methods have been well established while the juniors work at the place where machine learning method are being explored, and the outsiders tend to work at places where people do not exploit machine learning. Intuitively, this makes perfect sense as the experts are the ones having the most years of machine learning experience, while the juniors and outsiders have not had much experience with machine learning.
+The experts mostly work at places where machine learning methods have been well established while the juniors work at the place where machine learning method are being explored, and the outsiders tend to work at places where people do not exploit machine learning. Intuitively, this can be explained by the fact that experts are the ones having the most years of machine learning experience, while juniors and outsiders have not had much experience with machine learning.
 
 
 * Q23: Select any activities that make up an important part of your role at work
@@ -1122,4 +1122,4 @@ The key takeaways from our findings are:
 6. As you advance further, you will use more of local development environments than the basic statistical software, so get yourself familiar with them.
 7. Kaggle has been in the top three (1) platforms for deploying data analysis (i.e code sharing), (2) media sources on data science topics, and (3) online data science courses. In addition to Kaggle, Youtube and blogs such as Medium and TowardsDataScience are also great resources for casual learning and networking with people in the field.
 
-So the journey to discovering the world of data science has come to an end. Hopefully after reading this analysis, you could gain some meaningful insights into the field and get motivated to learn data science. Thank you for reading and Kaggle for giving us the chance to explore this fun dataset. Hope you all enjoy it and will find your own way to sucess in this fuzzy yet fantastic world. All the best!
+So the journey to discovering the world of data science has come to an end. Hopefully after reading this analysis, you could gain some meaningful insights into the field and get motivated to learn data science. Thank you for reading and Kaggle for giving us the chance to explore this fun dataset. Hope you all enjoy it and will find your own way to sucess in this fuzzy yet fantastic world!
