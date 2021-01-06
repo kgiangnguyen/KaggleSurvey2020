@@ -39,7 +39,7 @@ Welcome to the Wonderland of Data Science!
 
 Our analysis uses data from 20,036 responses in the Kaggle’s 2020 survey. Although the survey is limited to the Kaggle community, we believe the insights about these Kagglers will not only apply to our community, but also generalize to a larger data science community in which we better understand the roadmap that people are taking, the tools that people are developing, and the language that people are using to communicate about data science nowadays. We decide to tell our story by means of radar chart as we want to focus on the behavioral tendencies of the respondents and compare the trends between different detected groups of data scientists within the Kaggle community.
 
-Just like Alice going on an adventure to the Wonderland, no matter where you are on the data science path, you will definitely "grow up" and survive in this confusing yet very exciting world. We hope our analysis will serve as a guide for you to master the arts of data science and help you stay up to date with the latest trends in the field. Now, let's get started!
+Just like Alice going on an adventure to the Wonderland, no matter where you are on the data science path, you will definitely "grow up" and survive in this confusing yet very exciting world. We hope our analysis will serve to guide you through the world of data science and help you stay up to date with the latest trends in the field. Now, let's get started!
 
 
 # Method
@@ -155,7 +155,7 @@ input_data <- input_data %>%
 
 ## Dimension Reduction
 
-Since we have 6 input questions corresponding to 6 dimensions, summarizing and visualizing data can be difficult while clustering might be ineffective in high-dimensional space. To overcome these limitations, we propose first using correspondence analysis (CA), an extension of principal component analysis suited to explore relationships among qualitative variables. This technique is generally used to analyze a data set from survey to identify the associations between variable categories. Since our data contains more than two categorical variables, we choose to use multiple correspondence analysis (MCA) as it can be applied to input of multiple dimensions. However, MCA has a disadvantage that it tends not to explain all the variance while looking at associations. For the purpose of this analysis, we select the first two dimensions which altogether account for 10.5% of the total variances in the survey's answers.
+Since we have 6 input questions corresponding to 6 dimensions, summarizing and visualizing data can be difficult while clustering might be ineffective in high-dimensional space. To overcome these limitations, we propose first using [correspondence analysis (CA)](https://en.wikipedia.org/wiki/Correspondence_analysis), an extension of principal component analysis suited to explore relationships among qualitative variables. This technique is generally used to analyze a data set from survey to identify the associations between variable categories. Since our data contains more than two categorical variables, we choose to use [multiple correspondence analysis (MCA)](https://en.wikipedia.org/wiki/Multiple_correspondence_analysis) as it can be applied to input of multiple dimensions. However, MCA has a disadvantage that it tends not to explain all the variance while looking at associations. For the purpose of this analysis, we select the first two dimensions which altogether account for 10.5% of the total variances in the survey's answers.
 
 ```{r, include=FALSE}
 mca <- MCA(input_data, ncp = 2, graph = FALSE)
@@ -167,7 +167,7 @@ fviz_mca_var(mca, choice = "mca.cor",
 
 ## Clustering Analysis
 
-Our goal is to better understand the specific communities represented in the survey. Thus, we propose using K-means clustering, one of the simplest and most popular clustering that aims to group similar data points together and discover underlying patterns. To process the learning data and detect clusters, K-means identifies *k* number of centroids, and then allocates every data point to the nearest cluster, while keeping the centroids as small as possible. After examining different possible values of *k*, we decide to pick *k = 3*. This will help the model to avoid overfitting while ensuring its descriptive performance. Contextually, we believe 3 is a suitable number of groups of similar respondents that will allow us to dive deep into the survey dataset and tell the diverse stories of data scientists from around the world.
+Our goal is to better understand the specific communities represented in the survey. Thus, we propose using [K-means clustering](https://en.wikipedia.org/wiki/K-means_clustering), one of the simplest and most popular clustering that aims to group similar data points together and discover underlying patterns. To process the learning data and detect clusters, K-means identifies *k* number of centroids, and then allocates every data point to the nearest cluster, while keeping the centroids as small as possible. After examining different possible values of *k*, we decide to pick *k = 3*. This will help the model to avoid overfitting while ensuring its descriptive performance. Contextually, we believe 3 is a suitable number of groups of similar respondents that will allow us to dive deep into the survey dataset and tell the diverse stories of data scientists from around the world.
 
 ```{r, include=FALSE}
 set.seed(2020)
@@ -291,8 +291,7 @@ radarchart(q5_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
-While the experts are mostly scientists, researchers, the junior team are students, or working at various positions within the data science field. 
-The outsiders are either unemployed, not working in the field (others) or even students (they could be those pursuing a master degree or a bachelor in another field. 
+This observation closely matches our expectation about the current roles of the three groups: the experts are mostly scientists and researchers; the junior players are mainly students or working at various positions within the data science field; and the amateur outsiders are either unemployed, not working in the field (others), or even students as they could be pursuing a Master's or a Bachelor's degree in another field.
 
 
 * Q20: What is the size of the company where you are employed?
@@ -380,8 +379,7 @@ radarchart(q21_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
-In terms of company size, three groups all have similar shape as ‘0-44 employees’ is the most popular size.
-However, the first group also work for companies with bigger scope
+In terms of company size, the three groups all have similar shape in which ‘0-44 employees’ is the most popular size. However, the experts are likely to work for companies with bigger scope as they tend to have more individuals responsible for data science workloads at business, as opposed to the juniors and outsiders who might be still in school or working for compaies with smaller scope.
 
 
 * Q22: Does your current employer incorporate machine learning methods into their business?
@@ -427,7 +425,7 @@ radarchart(q22_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
-The expert team mostly work at the place where ML methods have been well established while junior peers work at the place where ML method are being explored. The outsider, however, work at the place where people do not exploit ML 
+The experts mostly work at places where machine learning methods have been well established while the juniors work at the place where machine learning method are being explored, and the outsiders tend to work at places where people do not exploit machine learning. Intuitively, this makes perfect sense as the experts are the ones having the most years of machine learning experience, while the juniors and outsiders have not had much experience with machine learning.
 
 
 * Q23: Select any activities that make up an important part of your role at work
@@ -476,8 +474,7 @@ radarchart(q23_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
-As indicated in Q5, the expert team’s jobs are mostly data scientists and researchers, therefore their work will focus more on building/running prototypes to explore applying machine learning to new areas even though they still support business decisions with their data analysis.
-The junior team are typical data analysts whose responsibilities mainly focus on analyzing and understand data to support business and products.
+As indicated in Q5, the experts are likely to be data scientists and researchers, therefore their work will also focus on building/running prototypes to explore applying machine learning to new areas in addition to supporting business decisions with their data analysis. The junior players and amateur outsiders are expected to be entry-level data analysts or business analysts whose responsibilities simply focus on analyzing and understand data to support business and products.
 
 
 * Q24: What is your current yearly compensation (approximate $USD)?
@@ -524,7 +521,7 @@ radarchart(q24_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
-How much a data science job can bring to you? This question is always in people’s interest, especially those who just start the career or those who’re thinking about switching. According to the results in Q24, people who just join in the path will receive up to \$50K, but no more than \$150K. However, The compensations will increase overtime, and salary range can get bigger for the experts from 0 – \$50K to \$100K – \$150K or even more than \$200K
+How much can you make with a data science job? This question is always of people’s interest, especially those who just enter the field or are thinking about switching to data science from another field. According to the results in Q24, the beginners are likely to be paid up to \$50 but no more than \$150K. Fortunately, the salary for the experts is expected to be in a larger range from 0 – \$50K to \$100K – \$150K or even more than \$200K, implying that compensation is likely to increase as you improve your skills and move up the ladder over time.
 
 
 ## Insights about technical skills
@@ -580,8 +577,9 @@ radarchart(q7_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
-Python is the programming language that is used on a regular basis according to all groups. SQL is the second language that is used according to data science insiders (the expert & the junior). Since Python is not only capable of the statistical/modelling side of data sciencem, but also implement non-statistical functionality, it’s reasonable to stay as the most popular choice. Besides, SQL is very powerful in extracting, manipulating and loading data so it’s very common in data analytics as part of business intelligence process. 
-It’s very interesting that, the outsiders also use R in addition to Python. This also makes sense as R is exclusively powerful for statistical analysis and modelling, it’s usually helpful for people who want to leverage their foundation of data science. Python, on the other hand, is used more for machine learning, deep learning, NLP – the more advanced side of data science.
+Python stands out to be the most popular choice of programming language used on a regular basis according to all groups. Since Python has hundreds of different libraries and frameworks focused on data analytics and machine learning, it is no surprise that data scientists love to use it. Besides Python, SQL is also a popular language to data science insiders (the experts & the juniors) since it is very common and widely used in data analytics as part of business intelligence process.
+
+It is very interesting that the outsiders also use R in addition to Python. This also makes sense as R is exclusively powerful for statistical analysis and modelling, and usually helpful for people who want to leverage their foundation of data science. Python, on the other hand, is a better use for machine learning, deep learning, NLP – the more advanced topics of data science.
 
 
 * Q8: What programming language would you recommend an aspiring data scientist to learn first?
@@ -627,7 +625,7 @@ radarchart(q8_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
-As a result of Q7, Q8 clearly indicates the language that everyone should prioritize to learn first if they would like to “communicate” in the data science world.  Ideally, an individual can master other languages like SQL or R but in the long run, Python is the way to go.
+As a result of Q7, Q8 clearly indicates Python is the language that everyone should prioritize learning first in order to communicate effectively in the data science world.  Ideally, an individual can master other languages such as SQL and R but in the long run, Python is the way to go.
 
 
 * Q9: Which of the following integrated development environments (IDE's) do you use on a regular basis?
@@ -1011,6 +1009,7 @@ radarchart(q37_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
+The top three sources for learning data science are Coursera, Udemy, Kaggle Learn Courses for all groups. It is interesting to see that for the insider groups, university is also a notable platform.
 
 * Q38: What is the primary tool that you use at work or school to analyze data?
 
@@ -1056,6 +1055,7 @@ radarchart(q38_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
+The three groups’ radar charts show the trends as an individual moves further in the data science field. In the early stage, people use basic statistical software such as Excel, Google Sheet, and later on gradually switch to use local development environments like Rstudio or Jupyter more often. 
 
 * Q39: Who/what are your favorite media sources that report on data science topics?
 
@@ -1107,5 +1107,19 @@ radarchart(q39_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
+The top three media sources for data science topics are Kaggle, YouTube, and blogs. The trend indicates that Youtube works best for the amateur outsiders (presumably for its visualization and interactivity), while journal publications and blogs are more popular for the experts.
+
 
 # Conclusion
+
+The key takeaways from our findings are:
+
+1. The majority of respondents are beginners in data science who are typically in the age of 20-25 from Asia, have graduated from colleges and had 2-3 years of coding experience. Understandably, data science is a relatively new field and usually attracts young talents.
+2. People in data science often begin their careers as data analysts, software engineers, or data scientists. However, a large number of them would choose to continue their education by pursuing a Master's degree.
+3. Data science is one of the best-paying jobs nowadays. Fresh data scientists can expect salary starting from \$50K to \$150K while seniors can make up to \$250K. Compensation is likely to increase proportional to your level of expertise.
+4. Machine learning remains to be the hottest trend in data science. While freshers just started to explore machine learning for production or generating business insights, the majority of experts have developed well-established models, and they will continue the work to improve their models and design state-of-the-art machine learning methods. 
+5. Python is the key. Learn Python to survive in this world!
+6. As you advance further, you will use more of local development environments than the basic statistical software, so get yourself familiar with them.
+7. Kaggle has been in the top three (1) platforms for deploying data analysis (i.e code sharing), (2) media sources on data science topics, and (3) online data science courses. In addition to Kaggle, Youtube and blogs such as Medium and TowardsDataScience are also great resources for casual learning and networking with people in the field.
+
+So the journey to discovering the world of data science has come to an end. Hopefully after reading this analysis, you could gain some meaningful insights into the field and get motivated to learn data science. Thank you for reading and Kaggle for giving us the chance to explore this fun dataset. Hope you all enjoy it and will find your own way to sucess in this fuzzy yet fantastic world. All the best!
