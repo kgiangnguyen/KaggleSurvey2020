@@ -43,7 +43,7 @@ Just like Alice going on an adventure to the Wonderland, no matter where you are
 
 # Clustering analysis
 
-In this analysis, we aim to detect different groups of data scientists within the Kaggle community using clustering technique. Questions 1, 2, 3, 4, 6, and 15 are selected as input features for clustering since demographics, education, and years of experience are all fixed properties representative of an indivdual. Given the clusters, individuals excluded from the survey will be able to identify the group most relevant to them based on their background information and gain useful insights regarding career tracks, technical skills, and learning resources through our analysis.
+In this analysis, we aim to detect different groups of data scientists within the Kaggle community using clustering technique. Questions 1, 2, 3, 4, 6, and 15 are selected as input features for clustering since demographics, education, and years of experience are all fixed properties representative of an indivdual. Given the clusters, individuals excluded from the survey will be able to identify the group most relevant to them based on their background information and gain useful insights regarding data science career tracks, technical skills, and learning resources through our analysis.
 
 The input questions are as below:
 
@@ -190,32 +190,20 @@ get_mode <- function(v) {
 }
 ```
 
-
-```{r, message=FALSE, warning=FALSE, echo=FALSE}
-clust_dist <- input_cluster %>%
-  group_by(cluster) %>%
-  summarize(Count = n()) %>%
-  mutate(Group = c("Experts", "Junior Players", "Amateur Outsiders")) %>%
-  dplyr::select(Group, Count)
-
-clust_dist %>%
-  kable(align = "c") %>%
-  kable_styling("hover", full_width = F)
-```
-
-Text goes here
+Now that we have found the clusters of similar respondents from the survey, we will next examine the types of data scientists within the Kaggle community that these clusters represent. Since our variables are all categorical, we choose to calculate the mode to measure the central tendency of each variable. Below is the table of cluster distribution with the corresponding mode values of the input questions:
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 clust_info <- input_cluster %>%
   group_by(cluster) %>%
-  summarize(Age = get_mode(Q1),
+  summarize(Count = n(),
+            Age = get_mode(Q1),
             Continent = get_mode(Q3_Continent),
             Degree = get_mode(Q4),
             `Years of Coding` = get_mode(Q6),
-            `Years of Machine Learning` = get_mode(Q15)) %>%
+            `Years of ML` = get_mode(Q15)) %>%
   mutate(Degree2 = ifelse(Degree == "Masterâ€™s degree", "Master's degree", ifelse(Degree == "Bachelorâ€™s degree", "Bachelor's degree", Degree))) %>%
   mutate(Group = c("Experts", "Junior Players", "Amateur Outsiders")) %>%
-  dplyr::select(Group, Age, Continent, Degree, `Years of Coding`, `Years of Machine Learning`)
+  dplyr::select(Group, Count, Age, Continent, Degree, `Years of Coding`, `Years of ML`)
 
 clust_info %>%
   kable(align = "c") %>%
