@@ -1,5 +1,6 @@
 ---
 title: "Alice in the Data Science World: A Tale Through the Lens of Radar Chart"
+author: "Phuong Hoang & Kieu-Giang Nguyen"
 output: html_document
 ---
 
@@ -290,6 +291,9 @@ radarchart(q5_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
+While the experts are mostly scientists, researchers, the junior team are students, or working at various positions within the data science field. 
+The outsiders are either unemployed, not working in the field (others) or even students (they could be those pursuing a master degree or a bachelor in another field. 
+
 
 * Q20: What is the size of the company where you are employed?
 
@@ -376,6 +380,9 @@ radarchart(q21_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
+In terms of company size, three groups all have similar shape as ‘0-44 employees’ is the most popular size.
+However, the first group also work for companies with bigger scope
+
 
 * Q22: Does your current employer incorporate machine learning methods into their business?
 
@@ -419,6 +426,8 @@ radarchart(q22_cluster_3, title = "Amateur Outsiders",
            pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
+
+The expert team mostly work at the place where ML methods have been well established while junior peers work at the place where ML method are being explored. The outsider, however, work at the place where people do not exploit ML 
 
 
 * Q23: Select any activities that make up an important part of your role at work
@@ -467,6 +476,9 @@ radarchart(q23_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
+As indicated in Q5, the expert team’s jobs are mostly data scientists and researchers, therefore their work will focus more on building/running prototypes to explore applying machine learning to new areas even though they still support business decisions with their data analysis.
+The junior team are typical data analysts whose responsibilities mainly focus on analyzing and understand data to support business and products.
+
 
 * Q24: What is your current yearly compensation (approximate $USD)?
 
@@ -512,6 +524,7 @@ radarchart(q24_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
+How much a data science job can bring to you? This question is always in people’s interest, especially those who just start the career or those who’re thinking about switching. According to the results in Q24, people who just join in the path will receive up to \$50K, but no more than \$150K. However, The compensations will increase overtime, and salary range can get bigger for the experts from 0 – \$50K to \$100K – \$150K or even more than \$200K
 
 
 ## Insights about technical skills
@@ -567,6 +580,9 @@ radarchart(q7_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
+Python is the programming language that is used on a regular basis according to all groups. SQL is the second language that is used according to data science insiders (the expert & the junior). Since Python is not only capable of the statistical/modelling side of data sciencem, but also implement non-statistical functionality, it’s reasonable to stay as the most popular choice. Besides, SQL is very powerful in extracting, manipulating and loading data so it’s very common in data analytics as part of business intelligence process. 
+It’s very interesting that, the outsiders also use R in addition to Python. This also makes sense as R is exclusively powerful for statistical analysis and modelling, it’s usually helpful for people who want to leverage their foundation of data science. Python, on the other hand, is used more for machine learning, deep learning, NLP – the more advanced side of data science.
+
 
 * Q8: What programming language would you recommend an aspiring data scientist to learn first?
 
@@ -610,6 +626,8 @@ radarchart(q8_cluster_3, title = "Amateur Outsiders",
            pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
+
+As a result of Q7, Q8 clearly indicates the language that everyone should prioritize to learn first if they would like to “communicate” in the data science world.  Ideally, an individual can master other languages like SQL or R but in the long run, Python is the way to go.
 
 
 * Q9: Which of the following integrated development environments (IDE's) do you use on a regular basis?
@@ -660,6 +678,8 @@ radarchart(q9_cluster_3, title = "Amateur Outsiders",
            pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
+
+Knowing the results of Q7 & Q8, it is no surprise that Jupyter is selected to be the most common IDE, while Visual Studio Code and Pycharm come second since the three environments all support Python very well. Since R is largely used by the outsiders, R-studio and Jupyter are equally popular to this group.
 
 
 * Q14: What data visualization libraries or tools do you use on a regular basis?
@@ -927,6 +947,16 @@ radarchart(q36_cluster_3, title = "Amateur Outsiders",
            pcol = '#7A4D96', pfcol = alpha('#BCA6CA', 0.3), plwd = 2,
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
+
+Interestingly, we don’t have any responses from the outsiders for questions related to specific tools/packages that are used in data science. The responses from the other two groups have very similar shapes, though the experts' seem to be more diverse than the juniors'. A recap of the responses is as below:
+
+  * Top visualization libraries: Matplotlib, Seaborn, Ggplot / ggplot2
+  * Top  machine learning frameworks: Scikit-learn, TensorFlow, Keras
+  * Top big data products: PostgresSQL, MongoDB, Microsoft SQL Server
+  * Top BI tools: Tableau, Microsoft Power BI,  Data Studio
+  * Top sharing/deploying platforms: Github, Kaggle
+
+One thing we can notice from these radar charts in this section is that the junior team seems to have a better idea of the programming languages and IDEs that they want to focus on than the other two groups. For experts, it is  possible that they want to challenge themselves and explore different available tools so that they could implement their products more efficiently. For outsiders, they might have been trying a couple different things to learn more about data science and collecting clues to figure out the best way to land a job in the field. Depending on what you want to do and the level you are at, you can identify the tools/packages most suitable for you and prioritize mastering them accordingly.
 
 
 ## Insights about learning resources
