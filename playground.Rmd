@@ -167,7 +167,7 @@ fviz_mca_var(mca, choice = "mca.cor",
 
 ## Clustering Analysis
 
-Our goal is to better understand the specific communities represented in the survey. Thus, we propose using [K-means clustering](https://en.wikipedia.org/wiki/K-means_clustering), one of the simplest and most popular clustering that aims to group similar data points together and discover underlying patterns. To process the learning data and detect clusters, K-means identifies *k* number of centroids, and then allocates every data point to the nearest cluster, while keeping the centroids as small as possible. After examining different possible values of *k*, we decide to pick *k = 3*. This will help the model to avoid overfitting while ensuring its descriptive performance. Contextually, we believe 3 is a suitable number of groups of similar respondents that will allow us to dive deep into the survey dataset and tell the diverse stories of data scientists from around the world.
+Our goal is to better understand the specific communities represented in the survey. Thus, we propose using [K-means clustering](https://en.wikipedia.org/wiki/K-means_clustering), one of the simplest and most popular clustering methods that aims to group similar data points together and discover underlying patterns. To process the learning data and detect clusters, K-means identifies *k* number of centroids, and then allocates every data point to the nearest cluster, while keeping the centroids as small as possible. After examining different possible values of *k*, we decide to pick *k = 3*. This will help the model to avoid overfitting while ensuring its descriptive performance. Contextually, we believe 3 is a suitable number of groups of similar respondents that will allow us to dive deep into the survey dataset and tell the diverse stories of data scientists from around the world.
 
 ```{r, include=FALSE}
 set.seed(2020)
@@ -191,7 +191,7 @@ get_mode <- function(v) {
 }
 ```
 
-Now that we have found the clusters of similar respondents from the survey, we will next examine the types of data scientists within the Kaggle community that these clusters represent. Since our variables are all categorical, we choose to calculate the mode to measure the central tendency of each variable. Below is the table of cluster distribution with the corresponding mode values of the input questions:
+Now that we have found the clusters of similar respondents from the survey, we will next examine the types of data scientists within the Kaggle community that these clusters represent. Since our variables are all categorical, we choose to calculate the mode to measure the central tendency of each variable. Below is the table of cluster distribution with the corresponding mode values of the input features:
 
 ```{r, message=FALSE, warning=FALSE, echo=FALSE}
 clust_info <- input_cluster %>%
@@ -242,7 +242,7 @@ The second group consists of individuals in the age of 22- 24, mostly with a Bac
 
 </center>
 
-The third group consists of individuals in the age of 30 – 35, mostly with a Master's degree and many years of both coding and machine learning experience. We can call them the experts of the game as they seem to be much more proficient in data science more than anyone else. This group is the second largest among the three groups, accounting for roughly 30% of the sample.
+The third group consists of individuals in the age of 30 – 35, mostly with a Master's degree and many years of both coding and machine learning experience. We can call them the experts of the game as they seem to be much more proficient in data science than anyone else. This group is the second largest among the three groups, accounting for roughly 30% of the sample.
 
 
 # Findings
@@ -379,7 +379,7 @@ radarchart(q21_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
-In terms of company size, the three groups all have similar shape in which ‘0-44 employees’ is the most popular size. However, the experts are likely to work for companies with bigger scope as they tend to have more individuals responsible for data science workloads at business, as opposed to the juniors and outsiders who might be still in school or working for compaies with smaller scope.
+In terms of company size, the three groups all have similar shapes in which ‘0-44 employees’ is the most popular size. However, the experts are likely to work for companies with bigger scope as they tend to have more individuals responsible for data science workloads at business, as opposed to the juniors and outsiders who might be still in school or working for compaies with smaller scope.
 
 
 * Q22: Does your current employer incorporate machine learning methods into their business?
@@ -425,7 +425,7 @@ radarchart(q22_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
-The experts mostly work at places where machine learning methods have been well established while the juniors work at the place where machine learning method are being explored, and the outsiders tend to work at places where people do not exploit machine learning. Intuitively, this can be explained by the fact that experts are the ones having the most years of machine learning experience, while juniors and outsiders have not had much experience with machine learning.
+The experts mostly work at places where machine learning methods have been well established while the juniors work at places where machine learning methods are being explored, and the outsiders tend to work at places where people do not exploit machine learning. Intuitively, this can be explained by the fact that experts are the ones having the most years of machine learning experience, while juniors and outsiders have not had much experience with machine learning.
 
 
 * Q23: Select any activities that make up an important part of your role at work
@@ -954,7 +954,7 @@ Interestingly, we don’t have any responses from the outsiders for questions re
   * Top BI tools: Tableau, Microsoft Power BI,  Data Studio
   * Top sharing/deploying platforms: Github, Kaggle
 
-One thing we can notice from these radar charts in this section is that the junior team seems to have a better idea of the programming languages and IDEs that they want to focus on than the other two groups. For experts, it is  possible that they want to challenge themselves and explore different available tools so that they could implement their products more efficiently. For outsiders, they might have been trying a couple different things to learn more about data science and collecting clues to figure out the best way to land a job in the field. Depending on what you want to do and the level you are at, you can identify the tools/packages most suitable for you and prioritize mastering them accordingly.
+One thing we can notice from these radar charts in this section is that the junior team seems to have a better idea of the programming languages and IDEs that they want to focus on than the other two groups. For experts, it is possible that they want to challenge themselves and explore different available tools so that they could implement their products more efficiently. For outsiders, they might have been trying a couple different things to learn more about data science and collecting clues to figure out the best way to land a job in the field. Depending on what you want to do and the level you are at, you can identify the tools/packages most suitable for you and prioritize mastering them accordingly.
 
 
 ## Insights about learning resources
@@ -1055,7 +1055,7 @@ radarchart(q38_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
-The three groups’ radar charts show the trends as an individual moves further in the data science field. In the early stage, people use basic statistical software such as Excel, Google Sheet, and later on gradually switch to use local development environments like Rstudio or Jupyter more often. 
+The three groups’ radar charts show the trend as an individual moves further in the data science field. In the early stage, people use basic statistical software such as Excel and Google Sheet, and later on gradually switch to use local development environments like Rstudio or Jupyter more often. 
 
 * Q39: Who/what are your favorite media sources that report on data science topics?
 
@@ -1107,7 +1107,7 @@ radarchart(q39_cluster_3, title = "Amateur Outsiders",
            cglcol = "grey", cglty = 1, axislabcol = "grey", caxislabels = seq(0,20,5), cglwd = 0.8)
 ```
 
-The top three media sources for data science topics are Kaggle, YouTube, and blogs. The trend indicates that Youtube works best for the amateur outsiders (presumably for its visualization and interactivity), while journal publications and blogs are more popular for the experts.
+The top three media sources for data science topics are Kaggle, YouTube, and blogs. The trend indicates that Youtube works best for the amateur outsiders (presumably for its visualization and interactivity), while journal publications and blogs are more popular among the experts.
 
 
 # Conclusion
@@ -1117,7 +1117,7 @@ The key takeaways from our findings are:
 1. The majority of respondents are beginners in data science who are typically in the age of 20-25 from Asia, have graduated from colleges and had 2-3 years of coding experience. Understandably, data science is a relatively new field and usually attracts young talents.
 2. People in data science often begin their careers as data analysts, software engineers, or data scientists. However, a large number of them would choose to continue their education by pursuing a Master's degree.
 3. Data science is one of the best-paying jobs nowadays. Fresh data scientists can expect salary starting from \$50K to \$150K while seniors can make up to \$250K. Compensation is likely to increase proportional to your level of expertise.
-4. Machine learning remains to be the hottest trend in data science. While freshers just started to explore machine learning for production or generating business insights, the majority of experts have developed well-established models, and they will continue the work to improve their models and design state-of-the-art machine learning methods. 
+4. Machine learning remains to be the hottest trend in data science. While freshers just started to explore machine learning for production or business insight generation, the majority of experts have developed well-established models, and they will continue the work to improve their models and design state-of-the-art machine learning methods. 
 5. Python is the key. Learn Python to survive in this world!
 6. As you advance further, you will use more of local development environments than the basic statistical software, so get yourself familiar with them.
 7. Kaggle has been in the top three (1) platforms for deploying data analysis (i.e code sharing), (2) media sources on data science topics, and (3) online data science courses. In addition to Kaggle, Youtube and blogs such as Medium and TowardsDataScience are also great resources for casual learning and networking with people in the field.
